@@ -20,25 +20,25 @@ export interface EditorObject_Point extends EditorObject {
 type EditorObjects = EditorObject_Line | EditorObject_Point
 
 
-export interface EditorObjects_Export {
-    points: Point[]
-    lines: EditorObject_Line[]
-}
+export type EditorObjects_Export = Omit<EditorObject_Line, keyof EditorObject>
 
 export class EditorObjectsManager {
     editorObjects: EditorObjects[] = []
 
-    addObject(obj: EditorObjects): void {
+    addObject<T extends EditorObjects>(obj: T): void {
         this.editorObjects.push(obj)
-
-        console.log(obj.type + ` ${this.isLine(obj)}`)
     }
+
+    addLineEditorObject(obj: EditorObject_Line): void {
+        this.editorObjects.push(obj)
+    }
+
 
     getObject(objectId: string): EditorObject | null {
         return this.editorObjects.find(obj => obj.id === objectId) || null
     }
 
-    
+
     /**
      * @description checks is a object is a EditorObject_Point
      * @param {EditorObject} pointObject 
@@ -47,7 +47,7 @@ export class EditorObjectsManager {
     isPoint(pointObject: EditorObject): pointObject is EditorObject_Point {
         return pointObject && pointObject.type === "point"
     }
-    
+
     /**
      * @description checks if a object is a EditorObject_Line
      * @param {EditorObject} lineObject 
@@ -63,7 +63,7 @@ export class EditorObjectsManager {
             console.log("failed to update editor objects line width due to not finding object")
             return
         }
-        
+
         if (!this.isLine(findObject)) {
             console.log("Failed to update editor object line width due to object not being a EditorObject_Line")
             return
@@ -74,9 +74,9 @@ export class EditorObjectsManager {
                 obj.graphic.clear()
                 obj.graphic.moveTo(findObject.pt1.x, findObject.pt1.y)
                 obj.graphic.lineTo(findObject.pt2.x, findObject.pt2.y)
-                obj.graphic.stroke({width: newLineWidth, color: "white"})
+                obj.graphic.stroke({ width: newLineWidth, color: "white" })
 
-                return {...obj, lineWidth: newLineWidth}
+                return { ...obj, lineWidth: newLineWidth }
             } else return obj
         })
 
@@ -93,16 +93,12 @@ export class EditorObjectsManager {
         return justPoints.some(obj => obj.pt.x === pt.x && obj.pt.y === pt.y)
     }
 
-    export(): EditorObjects_Export {
-        const exportArray: EditorObjects_Export = { points: [], lines: [] }
+    export(): EditorObjects_Export[] {
+        const exportArray: EditorObjects_Export[] = []
 
         this.editorObjects.forEach(obj => {
-            if (obj.type === "point") {
-                const point = obj as EditorObject_Point
-                exportArray.points.push(point.pt)
-            } else if (obj.type === "line") {
-                const line = obj as EditorObject_Line
-                exportArray.lines.push(line)
+            if (this.isLine(obj)) {
+                exportArray.push({ lineWidth: obj.lineWidth, pt1: obj.pt1, pt2: obj.pt2 })
             }
         })
 

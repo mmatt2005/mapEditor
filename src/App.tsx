@@ -3,6 +3,7 @@ import { uiManager } from './main.ts'
 import { create } from 'zustand'
 import type { UiManager } from './uiManager.ts'
 import { useEffect } from 'react'
+import { loadMap, type MapJsonFileNames } from './loadMap.ts'
 
 interface UiState {
   ui: UiManager
@@ -20,6 +21,9 @@ const useUiStore = create<UiState>((set) => (
 
 export default function App() {
   const { ui, refreshUi, refreshed } = useUiStore()
+
+  const gameMaps: MapJsonFileNames[] = ["map1", "map2"]
+
   useEffect(() => {
     ui.updateUi = function () {
       refreshUi()
@@ -42,6 +46,19 @@ export default function App() {
       <div className="">
         <p>Selected: {ui.selectedObject?.type}</p>
       </div>
+      <select
+        name="maps"
+        id="maps-select"
+        className='bg-neutral-600'
+        onChange={(newValue) => {
+          const selectedMap = newValue.target.value as MapJsonFileNames
+          loadMap(selectedMap)
+        }}
+      >
+        {
+          gameMaps.map(m => <option value={m}>{m}</option>)
+        }
+      </select>
       <button className='bg-blue-500 p-1 cursor-pointer ml-auto' onClick={() => {
         const exportData = ui.editorObjectsManager.export()
         navigator.clipboard.writeText(JSON.stringify(exportData))

@@ -12,11 +12,6 @@ export class UiManager {
     constructor() {
         app.canvas.addEventListener("click", event => {
 
-            // if (this.drawLineManager.isSnapPointModeEnabled) {
-            //     this.drawLineManager.snapPoint(new Point(event.clientX, event.clientY))
-            //     return
-            // }
-
             if (this.drawLineManager.isDrawLineModeEnabled) {
                 this.drawLineManager.drawPoint(new Point(event.clientX, event.clientY))
             }
