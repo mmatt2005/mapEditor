@@ -1,5 +1,6 @@
 import { Application } from 'pixi.js';
 import { UiManager } from './uiManager';
+import { loadMap } from './loadMap';
 
 export const app = new Application()
 await app.init({ background: "gray", resizeTo: window})
@@ -10,3 +11,5 @@ document.body.appendChild(pixiContainer)
 pixiContainer.appendChild(app.canvas)
 
 export const uiManager = new UiManager()
+
+loadMap("city")

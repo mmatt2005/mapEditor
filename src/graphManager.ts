@@ -1,5 +1,5 @@
 import type { Point } from "pixi.js"
-import {v4 as uuidv4} from "uuid"
+import { uiManager } from "./main"
 
 export interface Node { 
     id: string
@@ -22,10 +22,11 @@ export class GraphManager {
                 connections: []               
             }
         )
+
+        uiManager.updateUi()
     }
 
     getNodeById(nodeId: Node["id"]): Node | null { 
-        console.log(this.nodes)
         return this.nodes.find(node => node.id === nodeId) || null
     }
 
@@ -49,12 +50,13 @@ export class GraphManager {
 
         connectingNode.connections.push(nodeId)
         node.connections.push(connectsTo)
-
-        console.log(this.nodes)
     }
 
     doesNodeAlreadyExistAtPosition(position: Point): boolean { 
         return this.nodes.some(n => n.position.x === position.x && n.position.y === position.y)
     }
 
+    isNodeAlreadyConnectedToNode(node1: Node, node2: Node): boolean { 
+        return node1.connections.includes(node2.id)
+    }
 }

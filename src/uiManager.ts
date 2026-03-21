@@ -7,10 +7,10 @@ export class UiManager {
     graphManager: GraphManager = new GraphManager()
     selectedNode: Node | null = null
     isCtrlKeyDown: boolean = false
+    sideMenuVisible: boolean = false
 
 
     constructor() {
-
         document.addEventListener("keydown", event => {
             if (event.key === "Control") {
                 this.isCtrlKeyDown = true
@@ -79,6 +79,7 @@ export class UiManager {
         edge.moveTo(pt1.x, pt1.y)
         edge.lineTo(pt2.x, pt2.y)
         edge.stroke({ color: "blue", width: 3 })
+        edge.eventMode = "static"
         app.stage.addChild(edge)
     }
 
