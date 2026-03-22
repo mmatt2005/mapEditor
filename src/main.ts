@@ -9,7 +9,8 @@ const pixiContainer = document.createElement("div")
 pixiContainer.id = "pixi-container"
 document.body.appendChild(pixiContainer)
 pixiContainer.appendChild(app.canvas)
+app.stage.sortableChildren = true
 
 export const uiManager = new UiManager()
 
-loadMap("city")
+loadMap("smallTown")
