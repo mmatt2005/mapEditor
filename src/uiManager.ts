@@ -2,15 +2,16 @@ import { Circle, Graphics, Point } from "pixi.js"
 import { v4 as uuidv4 } from "uuid"
 import { GraphManager, type Edge, type Node } from "./graphManager"
 import type { GameMapOptions } from "./loadMap"
-import { app } from "./main"
+import { app, GameObjectsZIndex } from "./main"
+import { ZoneManager, type Zone } from "./zoneManager"
 
 export class UiManager {
     graphManager: GraphManager = new GraphManager()
-    selected: Node | Edge | null = null
+    zoneManager: ZoneManager = new ZoneManager()
+    selected: Node | Edge | Zone | null = null
     isCtrlKeyDown: boolean = false
-    sideMenu: { visibile: boolean, selected: "map" | "node" | "edge" | null } = { visibile: false, selected: null }
+    sideMenu: { visibile: boolean, selected: "map" | "node" | "edge" | "zone" | null } = { visibile: false, selected: null }
     currentMap: GameMapOptions = "city"
-
 
     constructor() {
         document.addEventListener("keydown", event => {
@@ -54,14 +55,14 @@ export class UiManager {
         const node = new NodeGraphics(id)
         node.circle(point.x, point.y, 10)
         node.fill("white")
-        node.zIndex = 2
+        node.zIndex = GameObjectsZIndex.point
         node.eventMode = "static"
         node.hitArea = new Circle(point.x, point.y, 30)
         node.on("click", () => {
             const getNode = this.graphManager.getNodeById(node.id)
             if (!getNode) return console.log("Failed to get node so nopoe!")
 
-            if (!this.selected || this.selected.type !== "node") {
+            if (!this.selected || this.selected.editorType !== "node") {
                 this.selected = getNode
             } else {
                 const edgeId = uuidv4()
@@ -87,15 +88,16 @@ export class UiManager {
         edgeHitbox.lineTo(pt2.x, pt2.y)
         edgeHitbox.stroke({ width: edge.edgeWidth + 10, alpha: 0.0 })
         edgeHitbox.eventMode = "static"
+        edgeHitbox.zIndex = GameObjectsZIndex.edge
         edgeHitbox.on("click", () => {
+            console.log("A edge was clicked!")
             const getEdge = this.graphManager.getEdgeById(edgeGraphic.id)
             if (!getEdge) {
                 console.log("Failed to select edge due to not finding edge")
                 return
             }
             this.selected = getEdge
-            this.sideMenu.visibile = true
-            this.sideMenu.selected = "edge"
+            this.showSideMenu("edge")
             this.updateUi()
         })
 
@@ -103,7 +105,7 @@ export class UiManager {
         edgeGraphic.moveTo(pt1.x, pt1.y)
         edgeGraphic.lineTo(pt2.x, pt2.y)
         edgeGraphic.stroke({ color: "blue", width: edge.edgeWidth })
-        edgeGraphic.zIndex = 1
+        edgeGraphic.zIndex = GameObjectsZIndex.edge
         app.stage.addChild(edgeGraphic)
 
         app.stage.addChild(edgeHitbox)
@@ -141,6 +143,16 @@ export class UiManager {
         const distance = Math.sqrt(dx * dx + dy * dy);
 
         return distance
+    }
+
+    showSideMenu(selectedOption: UiManager["sideMenu"]["selected"]): void {
+        this.sideMenu.visibile = true
+        this.sideMenu.selected = selectedOption
+    }
+
+    hideSideMenu(): void { 
+        this.sideMenu.visibile = false
+        this.sideMenu.selected = null
     }
 }
 

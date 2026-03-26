@@ -1,100 +1,172 @@
-[
-    {
-        "id": "71dce4e0-354a-4dc1-92c5-8d5c57e694c8",
-        "position": {
-            "x": 423,
-            "y": 343
-        },
-        "connections": [
-            {
-                "connectionNodeId": "71dce4e0-354a-4dc1-92c5-8d5c57e694c8",
-                "type": "edge",
-                "id": "200a1855-1b5d-48dc-ada9-a98794551cdd",
-                "edgeWidth": 13
-            }
-        ],
-        "type": "node"
-    },
-    {
-        "id": "d35a4bb7-687b-4db7-a798-4c4285532b4f",
-        "position": {
-            "x": 839,
-            "y": 349
-        },
-        "connections": [
-            {
-                "connectionNodeId": "71dce4e0-354a-4dc1-92c5-8d5c57e694c8",
-                "type": "edge",
-                "id": "200a1855-1b5d-48dc-ada9-a98794551cdd",
-                "edgeWidth": 13
+{
+    "mapGraph": [
+        {
+            "id": "d4eb38ff-1798-4c83-9ae1-a7f3b79cad7f",
+            "position": {
+                "x": 615,
+                "y": 498
             },
-            {
-                "connectionNodeId": "d916263e-1191-4d3f-8fcf-a3814d691b0f",
-                "type": "edge",
-                "id": "d07dd977-b360-46a4-b0ec-b3a622d5c017",
-                "edgeWidth": 5
-            }
-        ],
-        "type": "node"
-    },
-    {
-        "id": "5ebf6561-2341-48f8-8f28-1cf9f58dc019",
-        "position": {
-            "x": 913,
-            "y": 649
+            "connections": [
+                {
+                    "connectionNodeId": "47a4b405-77bb-41a5-a353-91c45980f25e",
+                    "editorType": "edge",
+                    "id": "d9e7ef8d-82b4-4f91-9e7b-57b380470623",
+                    "edgeWidth": 5
+                },
+                {
+                    "connectionNodeId": "d4eb38ff-1798-4c83-9ae1-a7f3b79cad7f",
+                    "editorType": "edge",
+                    "id": "ba53d29f-9b3f-4d79-9420-411a64810654",
+                    "edgeWidth": 5
+                }
+            ],
+            "editorType": "node"
         },
-        "connections": [
-            {
-                "connectionNodeId": "5ebf6561-2341-48f8-8f28-1cf9f58dc019",
-                "type": "edge",
-                "id": "270477b7-964a-4ab2-aeb4-de97be1aa49c",
-                "edgeWidth": 5
-            }
-        ],
-        "type": "node"
-    },
-    {
-        "id": "8a3caa72-48d2-43d7-829c-c1ce4c25c392",
-        "position": {
-            "x": 1057,
-            "y": 392
-        },
-        "connections": [
-            {
-                "connectionNodeId": "8a3caa72-48d2-43d7-829c-c1ce4c25c392",
-                "type": "edge",
-                "id": "064e7f9b-77e0-4e44-bdc2-2d9549f4d171",
-                "edgeWidth": 8
+        {
+            "id": "8a2afca3-5680-4f4b-85b4-1a5923d54ac1",
+            "position": {
+                "x": 729,
+                "y": 334
             },
-            {
-                "connectionNodeId": "5ebf6561-2341-48f8-8f28-1cf9f58dc019",
-                "type": "edge",
-                "id": "270477b7-964a-4ab2-aeb4-de97be1aa49c",
-                "edgeWidth": 5
-            }
-        ],
-        "type": "node"
-    },
-    {
-        "id": "d916263e-1191-4d3f-8fcf-a3814d691b0f",
-        "position": {
-            "x": 976,
-            "y": 225
+            "connections": [
+                {
+                    "connectionNodeId": "a7c7a77a-6ca7-427b-b784-a53bf5a821d1",
+                    "editorType": "edge",
+                    "id": "0d66c340-c46a-405a-84d0-0d24e420b672",
+                    "edgeWidth": 5
+                },
+                {
+                    "connectionNodeId": "8a2afca3-5680-4f4b-85b4-1a5923d54ac1",
+                    "editorType": "edge",
+                    "id": "f7626438-dc28-4c8f-b1ab-8029986ad30a",
+                    "edgeWidth": 5
+                },
+                {
+                    "connectionNodeId": "d4eb38ff-1798-4c83-9ae1-a7f3b79cad7f",
+                    "editorType": "edge",
+                    "id": "ba53d29f-9b3f-4d79-9420-411a64810654",
+                    "edgeWidth": 5
+                }
+            ],
+            "editorType": "node"
         },
-        "connections": [
-            {
-                "connectionNodeId": "d916263e-1191-4d3f-8fcf-a3814d691b0f",
-                "type": "edge",
-                "id": "d07dd977-b360-46a4-b0ec-b3a622d5c017",
-                "edgeWidth": 5
+        {
+            "id": "9c0a347f-441a-4d4b-84ee-b99051870c89",
+            "position": {
+                "x": 904,
+                "y": 663
             },
-            {
-                "connectionNodeId": "8a3caa72-48d2-43d7-829c-c1ce4c25c392",
-                "type": "edge",
-                "id": "064e7f9b-77e0-4e44-bdc2-2d9549f4d171",
-                "edgeWidth": 8
-            }
-        ],
-        "type": "node"
-    }
-]
+            "connections": [
+                {
+                    "connectionNodeId": "9c0a347f-441a-4d4b-84ee-b99051870c89",
+                    "editorType": "edge",
+                    "id": "9c69fb97-6803-47a4-9680-85bca3a94ef1",
+                    "edgeWidth": 5
+                },
+                {
+                    "connectionNodeId": "93932792-85f6-4c28-8ad9-aaabf2d9ee39",
+                    "editorType": "edge",
+                    "id": "a2a901ad-e702-410e-a060-d551519a0856",
+                    "edgeWidth": 5
+                }
+            ],
+            "editorType": "node"
+        },
+        {
+            "id": "47a4b405-77bb-41a5-a353-91c45980f25e",
+            "position": {
+                "x": 678,
+                "y": 632
+            },
+            "connections": [
+                {
+                    "connectionNodeId": "47a4b405-77bb-41a5-a353-91c45980f25e",
+                    "editorType": "edge",
+                    "id": "d9e7ef8d-82b4-4f91-9e7b-57b380470623",
+                    "edgeWidth": 5
+                },
+                {
+                    "connectionNodeId": "9c0a347f-441a-4d4b-84ee-b99051870c89",
+                    "editorType": "edge",
+                    "id": "9c69fb97-6803-47a4-9680-85bca3a94ef1",
+                    "edgeWidth": 5
+                }
+            ],
+            "editorType": "node"
+        },
+        {
+            "id": "93932792-85f6-4c28-8ad9-aaabf2d9ee39",
+            "position": {
+                "x": 899,
+                "y": 401
+            },
+            "connections": [
+                {
+                    "connectionNodeId": "93932792-85f6-4c28-8ad9-aaabf2d9ee39",
+                    "editorType": "edge",
+                    "id": "a2a901ad-e702-410e-a060-d551519a0856",
+                    "edgeWidth": 5
+                },
+                {
+                    "connectionNodeId": "8a2afca3-5680-4f4b-85b4-1a5923d54ac1",
+                    "editorType": "edge",
+                    "id": "f7626438-dc28-4c8f-b1ab-8029986ad30a",
+                    "edgeWidth": 5
+                },
+                {
+                    "connectionNodeId": "93932792-85f6-4c28-8ad9-aaabf2d9ee39",
+                    "editorType": "edge",
+                    "id": "fc2a3c99-c947-4180-a80f-48c95c6abd5f",
+                    "edgeWidth": 20
+                }
+            ],
+            "editorType": "node"
+        },
+        {
+            "id": "a7c7a77a-6ca7-427b-b784-a53bf5a821d1",
+            "position": {
+                "x": 553,
+                "y": 374
+            },
+            "connections": [
+                {
+                    "connectionNodeId": "a7c7a77a-6ca7-427b-b784-a53bf5a821d1",
+                    "editorType": "edge",
+                    "id": "0d66c340-c46a-405a-84d0-0d24e420b672",
+                    "edgeWidth": 5
+                }
+            ],
+            "editorType": "node"
+        },
+        {
+            "id": "52ba7beb-1a5c-49e1-8bcf-5668cab40600",
+            "position": {
+                "x": 1257,
+                "y": 193
+            },
+            "connections": [
+                {
+                    "connectionNodeId": "93932792-85f6-4c28-8ad9-aaabf2d9ee39",
+                    "editorType": "edge",
+                    "id": "fc2a3c99-c947-4180-a80f-48c95c6abd5f",
+                    "edgeWidth": 20
+                }
+            ],
+            "editorType": "node"
+        }
+    ],
+    "zones": [
+        {
+            "startPoint": {
+                "x": 898,
+                "y": 140
+            },
+            "width": 430,
+            "height": 367,
+            "color": "green",
+            "id": "b420899f-a8d1-4b46-8ea7-12567c62f5d7",
+            "editorType": "zone",
+            "opacity": 0.7
+        }
+    ]
+}

@@ -5,15 +5,18 @@ export interface Node {
     id: string
     position: Point
     connections: Edge[]
-    type: "node"
+    editorType: "node"
 }
 
 export interface Edge {
     connectionNodeId: Node["id"]
     id: string
-    type: "edge"
+    editorType: "edge"
     edgeWidth: number
+    type: "normal" | "highway"
 }
+
+export const EDGE_TYPES: Edge["type"][] = ["normal", "highway"]
 
 export class GraphManager {
     nodes: Node[] = []
@@ -28,7 +31,7 @@ export class GraphManager {
                 id: id,
                 position: position,
                 connections: [],
-                type: "node"
+                editorType: "node"
             }
         )
 
@@ -163,7 +166,7 @@ export class GraphManager {
             return
         }
 
-        const edgeObject: Edge = { connectionNodeId: connectsTo, type: "edge", id: edgeId, edgeWidth: 5 }
+        const edgeObject: Edge = { connectionNodeId: connectsTo, editorType: "edge", id: edgeId, edgeWidth: 5, type: "normal" }
         connectingNode.connections.push(edgeObject)
         node.connections.push(edgeObject)
     }
