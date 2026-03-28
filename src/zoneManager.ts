@@ -1,19 +1,7 @@
 import { Graphics, Point } from "pixi.js"
-import { app, GameObjectsZIndex, uiManager } from "./main"
+import { app, uiManager } from "./main"
 import { v4 as uuidv4 } from "uuid"
-
-export interface Zone {
-    startPoint: Point
-    width: number
-    height: number
-    color: string
-    id: string
-    editorType: "zone"
-    opacity: number
-    type: "countryside" | "downtown" | "school" | "none"
-}
-
-export const ZONE_TYPES: Zone["type"][] = ["countryside", "downtown", "school", "none"]
+import { GameObjectsZIndex, type Zone } from "./types"
 
 export class ZoneManager {
     isShiftKeyDown: boolean = false
@@ -181,7 +169,7 @@ export class ZoneManager {
 
         // Remove from the zoneManager zones array 
         this.zones = this.zones.filter(z => z.id !== zoneId)
-        
+
         // Remove from the pixijs canvas
         app.stage.removeChild(zoneGraphic)
 

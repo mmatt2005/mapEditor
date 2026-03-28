@@ -1,22 +1,6 @@
-import type { Point } from "pixi.js"
-import { uiManager } from "./main"
-
-export interface Node {
-    id: string
-    position: Point
-    connections: Edge[]
-    editorType: "node"
-}
-
-export interface Edge {
-    connectionNodeId: Node["id"]
-    id: string
-    editorType: "edge"
-    edgeWidth: number
-    type: "normal" | "highway"
-}
-
-export const EDGE_TYPES: Edge["type"][] = ["normal", "highway"]
+import { Point } from "pixi.js";
+import { uiManager } from "./main";
+import type { Edge, Node } from "./types";
 
 export class GraphManager {
     nodes: Node[] = []
@@ -25,7 +9,6 @@ export class GraphManager {
             console.log(`Failed to add node due to another node already being at position: (${position.x}, ${position.y})`)
             return
         }
-
         this.nodes.push(
             {
                 id: id,
@@ -106,7 +89,7 @@ export class GraphManager {
         return null
     }
 
-    
+
     /**
      * @description updates a edge object with a new edge object.
      * @param {Edge["id"]} edgeId 
@@ -165,6 +148,33 @@ export class GraphManager {
             console.log("failed to addNodeConnections due to node already being connected to node...")
             return
         }
+
+
+        // for (const n of this.nodes) {
+        //     if (n.connections.length > 0) {
+        //         for (const edge of n.connections) {
+        //             const edgeConnection = this.getNodeById(edge.connectionNodeId)
+        //             if (!edgeConnection) return console.log("No edge connection node..")
+
+        //             const test = checkIntersection(
+        //                 node.position.x, node.position.y, connectingNode.position.x, connectingNode.position.y,
+        //                 n.position.x, n.position.y, edgeConnection.position.x, edgeConnection.position.y
+        //             )
+
+        //             if (test.type === "intersecting") {
+        //                 const dis = uiManager.getClosestNodeToPoint(new Point(test.point.x, test.point.y))
+
+        //                 console.log(dis)
+        //                 if (dis <= 75) {
+        //                     console.log("intercestion point is too close to an actual point...")
+        //                     return
+        //                 }
+        //                 uiManager.drawNode(new Point(test.point.x, test.point.y), "1241")
+
+        //             }
+        //         }
+        //     }
+        // }
 
         const edgeObject: Edge = { connectionNodeId: connectsTo, editorType: "edge", id: edgeId, edgeWidth: 5, type: "normal" }
         connectingNode.connections.push(edgeObject)

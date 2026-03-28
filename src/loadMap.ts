@@ -1,14 +1,14 @@
 import cityMap from "../public/map_city.json"
 import smallTownMap from "../public/map_smallTown.json"
-import { app, uiManager, type GameData } from "./main"
-
-export type GameMapOptions = "city" | "smallTown"
+import { app, uiManager } from "./main"
+import type { GameMapOptions, GameData } from "./types"
 
 export function loadMap(selectedMap: GameMapOptions = uiManager.currentMap): void {
     // Handles the case where we've already loaded a map and were loading a new one so we need clear out the previous map first.
     app.stage.removeChildren()
     uiManager.graphManager.nodes = []
     uiManager.zoneManager.zones = []
+    uiManager.propsManager.props = []
 
     let data = cityMap as GameData
     if (selectedMap) {
@@ -21,6 +21,7 @@ export function loadMap(selectedMap: GameMapOptions = uiManager.currentMap): voi
 
     uiManager.graphManager.nodes = data.mapGraph
     uiManager.zoneManager.zones = data.zones
+    uiManager.propsManager.props = data.props
 
     // Draw all the edges (lines)
     data.mapGraph.forEach(node => {
@@ -50,8 +51,13 @@ export function loadMap(selectedMap: GameMapOptions = uiManager.currentMap): voi
     })
 
     // Draw the Zones
-    data.zones.forEach(zone => { 
+    data.zones.forEach(zone => {
         uiManager.zoneManager.addZone(zone)
+    })
+
+    // Draw the props
+    data.props.forEach(prop => { 
+        uiManager.propsManager.loadProp(prop.id)
     })
 
 

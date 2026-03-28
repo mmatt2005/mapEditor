@@ -1,16 +1,19 @@
 import { Circle, Graphics, Point } from "pixi.js"
 import { v4 as uuidv4 } from "uuid"
-import { GraphManager, type Edge, type Node } from "./graphManager"
-import type { GameMapOptions } from "./loadMap"
-import { app, GameObjectsZIndex } from "./main"
-import { ZoneManager, type Zone } from "./zoneManager"
+import { GraphManager } from "./graphManager"
+import { app } from "./main"
+import { PropsManager } from "./propsManager"
+import { GameObjectsZIndex, type Edge, type GameMapOptions, type Node, type Prop, type Zone } from "./types"
+import { ZoneManager } from "./zoneManager"
+import { loadMap } from "./loadMap"
 
 export class UiManager {
     graphManager: GraphManager = new GraphManager()
     zoneManager: ZoneManager = new ZoneManager()
-    selected: Node | Edge | Zone | null = null
+    propsManager: PropsManager = new PropsManager()
+    selected: Node | Edge | Zone | Prop | null = null
     isCtrlKeyDown: boolean = false
-    sideMenu: { visibile: boolean, selected: "map" | "node" | "edge" | "zone" | null } = { visibile: false, selected: null }
+    sideMenu: { visibile: boolean, selected: "map" | "node" | "edge" | "zone" | "place-prop" | "prop" | null } = { visibile: false, selected: null }
     currentMap: GameMapOptions = "city"
 
     constructor() {
@@ -32,7 +35,7 @@ export class UiManager {
                 const id = uuidv4()
 
                 for (const pt of this.graphManager.nodes) {
-                    if (this.calculateDistanceBetweenTwoPoints(pt.position, position) <= 50) {
+                    if (this.calculateDistanceBetweenTwoNodes(pt.position, position) <= 50) {
                         console.log("Failed to draw point due to point being too close to another point...")
                         return
                     }
@@ -42,6 +45,7 @@ export class UiManager {
                 this.graphManager.addNode(position, id)
             }
         })
+
     }
 
     /** @description updates the react ui with the most up to date uiManager class  */
@@ -69,6 +73,7 @@ export class UiManager {
                 this.graphManager.addNodeConnection(this.selected.id, getNode.id, edgeId)
                 this.drawEdge(this.selected.position, new Point(point.x, point.y), edgeId)
                 this.selected = null
+
             }
 
             this.updateUi()
@@ -137,9 +142,23 @@ export class UiManager {
         })
     }
 
-    calculateDistanceBetweenTwoPoints(pt1: Point, pt2: Point): number {
-        const dx = pt1.x - pt2.x;
-        const dy = pt1.y - pt2.y;
+    // getClosestNodeToPoint(point: Point): number { 
+
+    //     const closestNode = uiManager.graphManager.nodes.sort((nodeA, nodeB) => { 
+    //         const nodeADistance = Math.hypot(point.x - nodeA.position.x, point.y - nodeA.position.y)
+    //         const nodeBDistance = Math.hypot(point.x, - nodeB.position.x, point.y - nodeB.position.y)
+
+    //         return nodeADistance - nodeBDistance
+    //     })
+
+    //     const distance = Math.hypot(point.x - closestNode[0].position.x, point.y - closestNode[0].position.y)
+
+    //     return Math.round(distance)
+    // }
+
+    calculateDistanceBetweenTwoNodes(node1: Point, node2: Point): number {
+        const dx = node1.x - node2.x;
+        const dy = node1.y - node2.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
 
         return distance
@@ -150,7 +169,7 @@ export class UiManager {
         this.sideMenu.selected = selectedOption
     }
 
-    hideSideMenu(): void { 
+    hideSideMenu(): void {
         this.sideMenu.visibile = false
         this.sideMenu.selected = null
     }

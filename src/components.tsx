@@ -1,9 +1,8 @@
 import { CheckIcon } from "lucide-react"
 import { useState } from "react"
 import { loadMap } from "./loadMap"
-import { app, uiManager, type GameData } from "./main"
-import { ZONE_TYPES, type Zone } from "./zoneManager"
-import { EDGE_TYPES, type Edge } from "./graphManager"
+import { app, uiManager } from "./main"
+import { EDGE_TYPES, PROPS, ZONE_TYPES, type Edge, type GameData, type Zone } from "./types"
 
 export function SelectedNodeUI() {
     return <>
@@ -17,6 +16,14 @@ export function SelectedNodeUI() {
                         uiManager.updateUi()
                     }}
                 >Remove</button>
+                <button
+                    className="bg-green-500 p-1"
+                    // onClick={() => {
+                    //     if (uiManager.selected?.editorType === "node") {
+                    //         car.moveTo(uiManager.selected)
+                    //     }
+                    // }}
+                >Move to</button>
             </div>
         }
         {
@@ -35,7 +42,7 @@ export function RightMenuButtons() {
                 <button
                     className='bg-blue-500 p-1 cursor-pointer'
                     onClick={() => {
-                        const exportObject: GameData = { mapGraph: uiManager.graphManager.nodes, zones: uiManager.zoneManager.zones }
+                        const exportObject: GameData = { mapGraph: uiManager.graphManager.nodes, zones: uiManager.zoneManager.zones, props: uiManager.propsManager.props}
                         navigator.clipboard.writeText(JSON.stringify(exportObject))
                         console.log("Copied!")
                     }}
@@ -45,6 +52,7 @@ export function RightMenuButtons() {
                     onClick={() => {
                         uiManager.graphManager.nodes = []
                         uiManager.zoneManager.zones = []
+                        uiManager.propsManager.props = []
                         app.stage.removeChildren()
                         uiManager.updateUi()
                     }}
@@ -58,6 +66,14 @@ export function RightMenuButtons() {
                 uiManager.updateUi()
             }}
         >Load Map</button>
+        <button
+            className='bg-gray-400 p-1 cursor-pointer'
+            onClick={() => {
+                uiManager.showSideMenu("place-prop")
+                uiManager.updateUi()
+            }}
+
+        >Place Props</button>
 
 
     </div>
@@ -74,6 +90,12 @@ export function LeftMenuPopup() {
         {
             uiManager.sideMenu.selected === "zone" && <LeftMenuPopupZoneSelected />
         }
+        {
+            uiManager.sideMenu.selected === "place-prop" && <LeftMenuPopUpPlaceProps />
+        }
+        {
+            uiManager.sideMenu.selected === "prop" && <LeftMenuPopUpPropSelected />
+        }
         <button
             className='bg-black/50 w-full h-10 cursor-pointer mt-auto'
             onClick={() => {
@@ -87,6 +109,114 @@ export function LeftMenuPopup() {
 
 function LeftMenuPopUpLabel({ label }: { label: string }) {
     return <h1 className="text-xl font-bold">{label}</h1>
+}
+
+function LeftMenuPopUpPropSelected() {
+    if (!uiManager.selected) return <>Failed to render prop selected due to no selected object</>
+    if (uiManager.selected.editorType !== "prop") return <>Failed to render prop selected due to editorType not being prop</>
+
+    const prop = uiManager.propsManager.getPropByName(uiManager.selected.name)
+    if (!prop) return <>No prop...</>
+
+    console.log(prop)
+
+    return <>
+        <LeftMenuPopUpLabel label="Prop"></LeftMenuPopUpLabel>
+        {
+            JSON.stringify(uiManager.selected, null, 2)
+        }
+        <div className="mt-4">
+            <label>Rotation</label>
+            <input
+                type="number"
+                className="bg-gray-500 w-full"
+                defaultValue={0}
+                onChange={(newValue) => {
+                    uiManager.propsManager.updateProp(
+                        prop.name,
+                        { ...prop, rotation: Number(newValue.target.value) }
+                    )
+                }}
+            />
+        </div>
+        <div className="mt-4">
+            <label htmlFor="">Parent Point</label>
+            <div className="">
+                <label>x</label>
+                <input
+                    className="bg-gray-500 p-1 w-full"
+                    value={prop.parentPoint.x}
+                    onChange={(newValue) => {
+                        uiManager.propsManager.updateProp(
+                            prop.name,
+                            {
+                                ...prop,
+                                parentPoint: { x: Number(newValue.target.value), y: prop.parentPoint.y }
+                            }
+                        )
+                    }}
+                />
+            </div>
+            <div className="">
+                <label>y</label>
+                <input
+                    className="bg-gray-500 p-1 w-full"
+                    value={prop.parentPoint.y}
+                    onChange={(newValue) => {
+                        uiManager.propsManager.updateProp(
+                            prop.name,
+                            {
+                                ...prop,
+                                parentPoint: { x: prop.parentPoint.x, y: Number(newValue.target.value) }
+                            }
+                        )
+                    }}
+
+                />
+            </div>
+        </div>
+        <button
+            className="bg-red-500 w-full p-1 cursor-pointer"
+            onClick={() => {
+                uiManager.propsManager.deleteProp(prop.name)
+                uiManager.selected = null
+                uiManager.hideSideMenu()
+            }}
+        >Delete</button>
+    </>
+}
+
+function LeftMenuPopUpPlaceProps() {
+
+    return <>
+        <LeftMenuPopUpLabel label="Place Props"></LeftMenuPopUpLabel>
+        <div className="space-y-4">
+            {
+                PROPS.map(prop => (
+                    <div
+                        className="bg-gray-500 p-1 cursor-pointer flex flex-row "
+                        onClick={() => {
+                            uiManager.propsManager.selectProp(prop.name)
+                        }}
+                    >
+                        <div className="flex gap-1 items-center">
+                            <p>{prop.name}</p>
+                        </div>
+                    </div>
+                ))
+            }
+            {
+                uiManager.propsManager.selectedProp && (
+                    <button
+                        className="bg-red-500 p-1 cursor-pointer w-full"
+                        onClick={() => {
+                            uiManager.propsManager.unselectProp()
+                        }}
+                    >Unselect</button>
+                )
+            }
+        </div>
+    </>
 }
 
 function LeftMenuPopupZoneSelected() {
@@ -140,7 +270,7 @@ function LeftMenuPopupZoneSelected() {
             value={zone.type}
             onChange={(newValue) => {
                 const newType = newValue.target.value as Zone["type"]
-                uiManager.zoneManager.updateZone(zone.id, {...zone, type: newType})
+                uiManager.zoneManager.updateZone(zone.id, { ...zone, type: newType })
                 uiManager.updateUi()
             }}
         >

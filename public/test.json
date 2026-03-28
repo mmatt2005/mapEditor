@@ -1,172 +1,37 @@
 {
     "mapGraph": [
         {
-            "id": "d4eb38ff-1798-4c83-9ae1-a7f3b79cad7f",
+            "id": "b6bbc1fa-0605-42ad-a428-1cfaad5ed242",
             "position": {
-                "x": 615,
-                "y": 498
+                "x": 328,
+                "y": 243
             },
-            "connections": [
-                {
-                    "connectionNodeId": "47a4b405-77bb-41a5-a353-91c45980f25e",
-                    "editorType": "edge",
-                    "id": "d9e7ef8d-82b4-4f91-9e7b-57b380470623",
-                    "edgeWidth": 5
-                },
-                {
-                    "connectionNodeId": "d4eb38ff-1798-4c83-9ae1-a7f3b79cad7f",
-                    "editorType": "edge",
-                    "id": "ba53d29f-9b3f-4d79-9420-411a64810654",
-                    "edgeWidth": 5
-                }
-            ],
+            "connections": [],
             "editorType": "node"
         },
         {
-            "id": "8a2afca3-5680-4f4b-85b4-1a5923d54ac1",
+            "id": "a0d1a66c-909b-45f1-8697-5c3f932c057b",
             "position": {
-                "x": 729,
-                "y": 334
+                "x": 663,
+                "y": 146
             },
-            "connections": [
-                {
-                    "connectionNodeId": "a7c7a77a-6ca7-427b-b784-a53bf5a821d1",
-                    "editorType": "edge",
-                    "id": "0d66c340-c46a-405a-84d0-0d24e420b672",
-                    "edgeWidth": 5
-                },
-                {
-                    "connectionNodeId": "8a2afca3-5680-4f4b-85b4-1a5923d54ac1",
-                    "editorType": "edge",
-                    "id": "f7626438-dc28-4c8f-b1ab-8029986ad30a",
-                    "edgeWidth": 5
-                },
-                {
-                    "connectionNodeId": "d4eb38ff-1798-4c83-9ae1-a7f3b79cad7f",
-                    "editorType": "edge",
-                    "id": "ba53d29f-9b3f-4d79-9420-411a64810654",
-                    "edgeWidth": 5
-                }
-            ],
-            "editorType": "node"
-        },
-        {
-            "id": "9c0a347f-441a-4d4b-84ee-b99051870c89",
-            "position": {
-                "x": 904,
-                "y": 663
-            },
-            "connections": [
-                {
-                    "connectionNodeId": "9c0a347f-441a-4d4b-84ee-b99051870c89",
-                    "editorType": "edge",
-                    "id": "9c69fb97-6803-47a4-9680-85bca3a94ef1",
-                    "edgeWidth": 5
-                },
-                {
-                    "connectionNodeId": "93932792-85f6-4c28-8ad9-aaabf2d9ee39",
-                    "editorType": "edge",
-                    "id": "a2a901ad-e702-410e-a060-d551519a0856",
-                    "edgeWidth": 5
-                }
-            ],
-            "editorType": "node"
-        },
-        {
-            "id": "47a4b405-77bb-41a5-a353-91c45980f25e",
-            "position": {
-                "x": 678,
-                "y": 632
-            },
-            "connections": [
-                {
-                    "connectionNodeId": "47a4b405-77bb-41a5-a353-91c45980f25e",
-                    "editorType": "edge",
-                    "id": "d9e7ef8d-82b4-4f91-9e7b-57b380470623",
-                    "edgeWidth": 5
-                },
-                {
-                    "connectionNodeId": "9c0a347f-441a-4d4b-84ee-b99051870c89",
-                    "editorType": "edge",
-                    "id": "9c69fb97-6803-47a4-9680-85bca3a94ef1",
-                    "edgeWidth": 5
-                }
-            ],
-            "editorType": "node"
-        },
-        {
-            "id": "93932792-85f6-4c28-8ad9-aaabf2d9ee39",
-            "position": {
-                "x": 899,
-                "y": 401
-            },
-            "connections": [
-                {
-                    "connectionNodeId": "93932792-85f6-4c28-8ad9-aaabf2d9ee39",
-                    "editorType": "edge",
-                    "id": "a2a901ad-e702-410e-a060-d551519a0856",
-                    "edgeWidth": 5
-                },
-                {
-                    "connectionNodeId": "8a2afca3-5680-4f4b-85b4-1a5923d54ac1",
-                    "editorType": "edge",
-                    "id": "f7626438-dc28-4c8f-b1ab-8029986ad30a",
-                    "edgeWidth": 5
-                },
-                {
-                    "connectionNodeId": "93932792-85f6-4c28-8ad9-aaabf2d9ee39",
-                    "editorType": "edge",
-                    "id": "fc2a3c99-c947-4180-a80f-48c95c6abd5f",
-                    "edgeWidth": 20
-                }
-            ],
-            "editorType": "node"
-        },
-        {
-            "id": "a7c7a77a-6ca7-427b-b784-a53bf5a821d1",
-            "position": {
-                "x": 553,
-                "y": 374
-            },
-            "connections": [
-                {
-                    "connectionNodeId": "a7c7a77a-6ca7-427b-b784-a53bf5a821d1",
-                    "editorType": "edge",
-                    "id": "0d66c340-c46a-405a-84d0-0d24e420b672",
-                    "edgeWidth": 5
-                }
-            ],
-            "editorType": "node"
-        },
-        {
-            "id": "52ba7beb-1a5c-49e1-8bcf-5668cab40600",
-            "position": {
-                "x": 1257,
-                "y": 193
-            },
-            "connections": [
-                {
-                    "connectionNodeId": "93932792-85f6-4c28-8ad9-aaabf2d9ee39",
-                    "editorType": "edge",
-                    "id": "fc2a3c99-c947-4180-a80f-48c95c6abd5f",
-                    "edgeWidth": 20
-                }
-            ],
+            "connections": [],
             "editorType": "node"
         }
     ],
     "zones": [
         {
             "startPoint": {
-                "x": 898,
-                "y": 140
+                "x": 727,
+                "y": 256
             },
-            "width": 430,
-            "height": 367,
+            "width": 454,
+            "height": 475,
             "color": "green",
-            "id": "b420899f-a8d1-4b46-8ea7-12567c62f5d7",
+            "id": "09980bad-4095-4022-8bc2-44d6f886d8f4",
             "editorType": "zone",
-            "opacity": 0.7
+            "opacity": 0.7,
+            "type": "none"
         }
     ]
 }
