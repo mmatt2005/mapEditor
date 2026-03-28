@@ -115,7 +115,7 @@ function LeftMenuPopUpPropSelected() {
     if (!uiManager.selected) return <>Failed to render prop selected due to no selected object</>
     if (uiManager.selected.editorType !== "prop") return <>Failed to render prop selected due to editorType not being prop</>
 
-    const prop = uiManager.propsManager.getPropByName(uiManager.selected.name)
+    const prop = uiManager.propsManager.getPropById(uiManager.selected.id)
     if (!prop) return <>No prop...</>
 
     console.log(prop)
@@ -133,7 +133,7 @@ function LeftMenuPopUpPropSelected() {
                 defaultValue={0}
                 onChange={(newValue) => {
                     uiManager.propsManager.updateProp(
-                        prop.name,
+                        prop.id,
                         { ...prop, rotation: Number(newValue.target.value) }
                     )
                 }}
@@ -148,7 +148,7 @@ function LeftMenuPopUpPropSelected() {
                     value={prop.parentPoint.x}
                     onChange={(newValue) => {
                         uiManager.propsManager.updateProp(
-                            prop.name,
+                            prop.id,
                             {
                                 ...prop,
                                 parentPoint: { x: Number(newValue.target.value), y: prop.parentPoint.y }
@@ -178,7 +178,7 @@ function LeftMenuPopUpPropSelected() {
         <button
             className="bg-red-500 w-full p-1 cursor-pointer"
             onClick={() => {
-                uiManager.propsManager.deleteProp(prop.name)
+                uiManager.propsManager.deleteProp(prop.id)
                 uiManager.selected = null
                 uiManager.hideSideMenu()
             }}

@@ -36,7 +36,7 @@ export class PropsManager {
             }
 
             if (this.selectedProp) {
-                this.placeProp(this.selectedProp.propName)
+                this.placeProp(this.selectedProp.propId)
             }
         })
     }
@@ -60,7 +60,7 @@ export class PropsManager {
             return
         }
 
-        const propSprite = new PropSprite(propTexture, getProp.name)
+        const propSprite = new PropSprite(propTexture, getProp.id, getProp.name)
         propSprite.position.set(getProp.x, getProp.y)
         propSprite.zIndex = GameObjectsZIndex.prop
         propSprite.eventMode = "static"
@@ -73,25 +73,25 @@ export class PropsManager {
 
     }
 
-    placeProp(propName: Prop["name"]): void {
+    placeProp(propId: Prop["id"]): void {
         if (!this.selectedProp) {
             console.log("Failed to place prop due to no selected prop object")
             return
         }
 
-        const propTexture = this.getPropTexture(propName)
+        const propTexture = this.getPropTexture(this.selectedProp.propName)
         if (!propTexture) {
             console.log("Failed to place prop due to no prop texture")
             return
         }
 
-        const propSprite = new PropSprite(propTexture, propName)
+        const propSprite = new PropSprite(propTexture, propId, this.selectedProp.propName)
         propSprite.position.set(this.selectedProp.x, this.selectedProp.y)
         propSprite.zIndex = GameObjectsZIndex.prop
 
         const prop: Prop = {
-            id: propSprite.propId,
-            name: propName,
+            id: propId,
+            name: this.selectedProp.propName,
             x: propSprite.position.x,
             y: propSprite.position.y,
             rotation: 0,
@@ -122,7 +122,8 @@ export class PropsManager {
             return
         }
 
-        const propSprite = new PropSprite(propTexture, propName)
+        const propId = uuidv4()
+        const propSprite = new PropSprite(propTexture, propId, propName)
         app.stage.addChild(propSprite)
 
         this.selectedProp = propSprite
@@ -137,31 +138,31 @@ export class PropsManager {
         }
     }
 
-    updateProp(propName: Prop["name"], newProp: Prop): void {
-        const getProp = this.getPropByName(propName)
+    updateProp(propId: Prop["id"], newProp: Prop): void {
+        const getProp = this.getPropById(propId)
         if (!getProp) {
             console.log("Failed to update prop due to not finding prop object")
             return
         }
 
         this.props = this.props.map(prop => {
-            if (prop.name === propName) {
+            if (prop.id === propId) {
                 return newProp
             } else return prop
         })
 
-        this.reDrawProp(propName)
+        this.reDrawProp(propId)
         uiManager.updateUi()
     }
 
-    reDrawProp(propName: Prop["name"]): void {
-        const getProp = this.getPropByName(propName)
+    reDrawProp(propId: Prop["id"]): void {
+        const getProp = this.getPropById(propId)
         if (!getProp) {
             console.log("Failed to re draw prop due to not finding prop object")
             return
         }
 
-        const getPropSprite = app.stage.children.filter(c => c instanceof PropSprite).find(prop => prop.propName === propName)
+        const getPropSprite = app.stage.children.filter(c => c instanceof PropSprite).find(prop => prop.propId === propId)
         if (!getPropSprite) {
             console.log("Failed to re draw prop due to not finding prop sprite")
             return
@@ -170,7 +171,7 @@ export class PropsManager {
         // getPropSprite.rotation = Math.PI / getProp.rotation 
     }
 
-    getPropTexture(propName: string): Texture | null {
+    getPropTexture(propName: Prop["name"]): Texture | null {
         const propFrame = PROPS.find(prop => prop.name === propName)
         if (!propFrame) {
             console.log("Failed to get prop texture due to failing to find prop frame")
@@ -193,10 +194,14 @@ export class PropsManager {
         return this.props.find(prop => prop.id === propId) || null
     }
 
-    deleteProp(propName: Prop["name"]): void {
-        this.props = this.props.filter(prop => prop.name !== propName)
+    deleteProp(propId: Prop["id"]): void {
+        console.log(this.props)
+        console.log(propId)
+        this.props = this.props.filter(prop => prop.id !== propId)
+        console.log(this.props)
 
-        const getPropSprite = app.stage.children.filter(c => c instanceof PropSprite).find(prop => prop.propName === propName)
+        const getPropSprite = app.stage.children.filter(c => c instanceof PropSprite).find(prop => prop.propId === propId)
+        console.log(getPropSprite?.propId)
         if (!getPropSprite) {
             console.log("Failed to delete prop due to not finding prop sprite")
             return
@@ -209,11 +214,12 @@ export class PropsManager {
 }
 
 export class PropSprite extends Sprite {
+    propId: string
     propName: Prop["name"]
-    propId: string = uuidv4()
 
-    constructor(texture: Texture, propName: Prop["name"]) {
+    constructor(texture: Texture, propId: string, propName: Prop["name"]) {
         super(texture)
+        this.propId = propId
         this.propName = propName
     }
 }

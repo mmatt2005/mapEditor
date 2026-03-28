@@ -1,1 +1,373 @@
-{"mapGraph":[{"id":"0f748144-665b-4fa8-a407-cb76cba17e10","position":{"x":634,"y":315},"connections":[{"connectionNodeId":"0f748144-665b-4fa8-a407-cb76cba17e10","editorType":"edge","id":"188033c7-238e-487a-a935-e507a99c7387","edgeWidth":5,"type":"normal"},{"connectionNodeId":"678f8f25-3bd6-42fc-8693-fb4a459a4181","editorType":"edge","id":"14acdcd4-22a1-4c6e-9b98-a400fe70d333","edgeWidth":5,"type":"normal"}],"editorType":"node"},{"id":"4004d287-9f6f-47a1-b679-32ab6a61947a","position":{"x":958,"y":294},"connections":[{"connectionNodeId":"4004d287-9f6f-47a1-b679-32ab6a61947a","editorType":"edge","id":"a55fcfde-270b-46ec-a0ce-868dffe4303c","edgeWidth":5,"type":"normal"},{"connectionNodeId":"678f8f25-3bd6-42fc-8693-fb4a459a4181","editorType":"edge","id":"1b10ef46-aa5c-4cca-be5b-df377dbab161","edgeWidth":5,"type":"normal"}],"editorType":"node"},{"id":"678f8f25-3bd6-42fc-8693-fb4a459a4181","position":{"x":786,"y":615},"connections":[{"connectionNodeId":"678f8f25-3bd6-42fc-8693-fb4a459a4181","editorType":"edge","id":"14acdcd4-22a1-4c6e-9b98-a400fe70d333","edgeWidth":5,"type":"normal"},{"connectionNodeId":"56db2a02-76a8-4a33-a60c-bae83bda3942","editorType":"edge","id":"54420400-1355-4ae8-893c-9ed4c5d4fd86","edgeWidth":5,"type":"normal"},{"connectionNodeId":"678f8f25-3bd6-42fc-8693-fb4a459a4181","editorType":"edge","id":"1b10ef46-aa5c-4cca-be5b-df377dbab161","edgeWidth":5,"type":"normal"}],"editorType":"node"},{"id":"56db2a02-76a8-4a33-a60c-bae83bda3942","position":{"x":792,"y":214},"connections":[{"connectionNodeId":"0f748144-665b-4fa8-a407-cb76cba17e10","editorType":"edge","id":"188033c7-238e-487a-a935-e507a99c7387","edgeWidth":5,"type":"normal"},{"connectionNodeId":"56db2a02-76a8-4a33-a60c-bae83bda3942","editorType":"edge","id":"54420400-1355-4ae8-893c-9ed4c5d4fd86","edgeWidth":5,"type":"normal"},{"connectionNodeId":"4004d287-9f6f-47a1-b679-32ab6a61947a","editorType":"edge","id":"a55fcfde-270b-46ec-a0ce-868dffe4303c","edgeWidth":5,"type":"normal"}],"editorType":"node"}],"zones":[{"startPoint":{"x":832,"y":122},"width":205,"height":570,"color":"green","id":"bd71e4c5-c719-4e75-a9c4-8137d30258b7","editorType":"zone","opacity":0.7,"type":"none"},{"startPoint":{"x":832,"y":122},"width":205,"height":570,"color":"green","id":"bd71e4c5-c719-4e75-a9c4-8137d30258b7","editorType":"zone","opacity":0.7,"type":"none"},{"startPoint":{"x":832,"y":122},"width":205,"height":570,"color":"green","id":"bd71e4c5-c719-4e75-a9c4-8137d30258b7","editorType":"zone","opacity":0.7,"type":"none"},{"startPoint":{"x":832,"y":122},"width":205,"height":570,"color":"green","id":"bd71e4c5-c719-4e75-a9c4-8137d30258b7","editorType":"zone","opacity":0.7,"type":"none"}],"props":[{"id":"f58d79d4-f232-4d68-97fc-fd03a93a7efa","name":"police station","x":874,"y":215,"rotation":0,"parentPoint":{"x":0,"y":0},"editorType":"prop"},{"id":"6c12745d-daeb-4f56-9b85-8c317125a740","name":"skyscraper","x":898,"y":421,"rotation":0,"parentPoint":{"x":0,"y":0},"editorType":"prop"},{"id":"a439177a-b2db-4da5-84ab-3d56885fb8fa","name":"basic house","x":694,"y":382,"rotation":0,"parentPoint":{"x":0,"y":0},"editorType":"prop"},{"id":"d6fc5e10-d73b-41a1-8930-5658c6a3c480","name":"basic house","x":653,"y":411,"rotation":0,"parentPoint":{"x":0,"y":0},"editorType":"prop"},{"id":"3129d93e-322c-41e6-8340-de35b706d61d","name":"basic house","x":715,"y":533,"rotation":0,"parentPoint":{"x":0,"y":0},"editorType":"prop"},{"id":"a21aff34-892d-4e2f-a5c8-faeaf9c325bb","name":"basic house","x":454,"y":144,"rotation":0,"parentPoint":{"x":0,"y":0},"editorType":"prop"},{"id":"06f7b0ee-1893-4f14-a327-152ff30750ab","name":"basic house","x":632,"y":145,"rotation":0,"parentPoint":{"x":0,"y":0},"editorType":"prop"},{"id":"b32218e1-c27b-4286-8361-2c9d1a5adc97","name":"basic house","x":269,"y":260,"rotation":0,"parentPoint":{"x":0,"y":0},"editorType":"prop"},{"id":"1354c6e9-4a63-4f05-ac8d-3e9c1d8dab9a","name":"basic house","x":494,"y":411,"rotation":0,"parentPoint":{"x":0,"y":0},"editorType":"prop"},{"id":"2d76139c-4c0e-4f0d-8927-dc4158ee16f8","name":"skyscraper","x":299,"y":149,"rotation":0,"parentPoint":{"x":0,"y":0},"editorType":"prop"},{"id":"ab3746fe-d180-438c-9bbd-ce9eeeb968e0","name":"skyscraper","x":477,"y":257,"rotation":0,"parentPoint":{"x":0,"y":0},"editorType":"prop"},{"id":"60386e14-cb4c-48a4-82d8-b882f31e4791","name":"police station","x":380,"y":616,"rotation":0,"parentPoint":{"x":0,"y":0},"editorType":"prop"}]}
+{
+    "mapGraph": [
+        {
+            "id": "30618cb4-d288-4ddd-9108-2f1647aefc5d",
+            "position": {
+                "x": 656,
+                "y": 307
+            },
+            "connections": [
+                {
+                    "connectionNodeId": "300d42fb-ac60-4efd-9153-dff967cde6ef",
+                    "editorType": "edge",
+                    "id": "ccdbd8ee-74d2-4ff6-89e6-73968aed6621",
+                    "edgeWidth": 5,
+                    "type": "normal"
+                },
+                {
+                    "connectionNodeId": "30618cb4-d288-4ddd-9108-2f1647aefc5d",
+                    "editorType": "edge",
+                    "id": "a2625445-cbc3-43fc-9baa-9a71a453b4b4",
+                    "edgeWidth": 5,
+                    "type": "normal"
+                },
+                {
+                    "connectionNodeId": "30618cb4-d288-4ddd-9108-2f1647aefc5d",
+                    "editorType": "edge",
+                    "id": "a65e486a-b69f-4074-9891-e53138e30159",
+                    "edgeWidth": 5,
+                    "type": "normal"
+                },
+                {
+                    "connectionNodeId": "1b070ecc-ed3e-4123-b710-417d6d69fec3",
+                    "editorType": "edge",
+                    "id": "dabef73d-8ba7-44ca-8026-bdcece6274d7",
+                    "edgeWidth": 5,
+                    "type": "normal"
+                }
+            ],
+            "editorType": "node"
+        },
+        {
+            "id": "fab06b3a-bb13-477b-ada3-a255cec8144f",
+            "position": {
+                "x": 659,
+                "y": 528
+            },
+            "connections": [
+                {
+                    "connectionNodeId": "fab06b3a-bb13-477b-ada3-a255cec8144f",
+                    "editorType": "edge",
+                    "id": "1a5790f5-ec42-4f52-b501-38a467c18f2e",
+                    "edgeWidth": 5,
+                    "type": "normal"
+                },
+                {
+                    "connectionNodeId": "23fc6dbc-118a-4ff2-be1a-9f68831de771",
+                    "editorType": "edge",
+                    "id": "06b82e51-582f-40bc-a50e-9194336f1bd6",
+                    "edgeWidth": 5,
+                    "type": "normal"
+                }
+            ],
+            "editorType": "node"
+        },
+        {
+            "id": "1b070ecc-ed3e-4123-b710-417d6d69fec3",
+            "position": {
+                "x": 480,
+                "y": 441
+            },
+            "connections": [
+                {
+                    "connectionNodeId": "1b070ecc-ed3e-4123-b710-417d6d69fec3",
+                    "editorType": "edge",
+                    "id": "95b90a92-cb96-4ab4-8de4-0f8490bac92a",
+                    "edgeWidth": 5,
+                    "type": "normal"
+                },
+                {
+                    "connectionNodeId": "fab06b3a-bb13-477b-ada3-a255cec8144f",
+                    "editorType": "edge",
+                    "id": "1a5790f5-ec42-4f52-b501-38a467c18f2e",
+                    "edgeWidth": 5,
+                    "type": "normal"
+                },
+                {
+                    "connectionNodeId": "1b070ecc-ed3e-4123-b710-417d6d69fec3",
+                    "editorType": "edge",
+                    "id": "dabef73d-8ba7-44ca-8026-bdcece6274d7",
+                    "edgeWidth": 5,
+                    "type": "normal"
+                }
+            ],
+            "editorType": "node"
+        },
+        {
+            "id": "2f47b1bf-88bc-4041-a1d2-b473eaef002c",
+            "position": {
+                "x": 874,
+                "y": 483
+            },
+            "connections": [
+                {
+                    "connectionNodeId": "2f47b1bf-88bc-4041-a1d2-b473eaef002c",
+                    "editorType": "edge",
+                    "id": "a956d5ed-068d-4ff0-9453-75920bccbb7f",
+                    "edgeWidth": 5,
+                    "type": "normal"
+                },
+                {
+                    "connectionNodeId": "bab26caa-5d77-4109-a1cd-c7c5f8c96131",
+                    "editorType": "edge",
+                    "id": "ad9d46df-c528-450a-9c4f-3704ecfec6f2",
+                    "edgeWidth": 5,
+                    "type": "normal"
+                },
+                {
+                    "connectionNodeId": "09a22bbb-2003-4fc6-8b8f-58d916ae1b22",
+                    "editorType": "edge",
+                    "id": "067528c0-90ec-4042-9e8d-877ca525945c",
+                    "edgeWidth": 5,
+                    "type": "normal"
+                }
+            ],
+            "editorType": "node"
+        },
+        {
+            "id": "bab26caa-5d77-4109-a1cd-c7c5f8c96131",
+            "position": {
+                "x": 791,
+                "y": 652
+            },
+            "connections": [
+                {
+                    "connectionNodeId": "bab26caa-5d77-4109-a1cd-c7c5f8c96131",
+                    "editorType": "edge",
+                    "id": "ad9d46df-c528-450a-9c4f-3704ecfec6f2",
+                    "edgeWidth": 5,
+                    "type": "normal"
+                }
+            ],
+            "editorType": "node"
+        },
+        {
+            "id": "9a5c9e60-f84e-438d-b8b9-c73a3cfcfa58",
+            "position": {
+                "x": 816,
+                "y": 271
+            },
+            "connections": [
+                {
+                    "connectionNodeId": "30618cb4-d288-4ddd-9108-2f1647aefc5d",
+                    "editorType": "edge",
+                    "id": "a2625445-cbc3-43fc-9baa-9a71a453b4b4",
+                    "edgeWidth": 5,
+                    "type": "normal"
+                },
+                {
+                    "connectionNodeId": "09a22bbb-2003-4fc6-8b8f-58d916ae1b22",
+                    "editorType": "edge",
+                    "id": "546a2738-a3e2-4374-a079-7e4d36d59e66",
+                    "edgeWidth": 5,
+                    "type": "normal"
+                }
+            ],
+            "editorType": "node"
+        },
+        {
+            "id": "09a22bbb-2003-4fc6-8b8f-58d916ae1b22",
+            "position": {
+                "x": 936,
+                "y": 374
+            },
+            "connections": [
+                {
+                    "connectionNodeId": "09a22bbb-2003-4fc6-8b8f-58d916ae1b22",
+                    "editorType": "edge",
+                    "id": "067528c0-90ec-4042-9e8d-877ca525945c",
+                    "edgeWidth": 5,
+                    "type": "normal"
+                },
+                {
+                    "connectionNodeId": "09a22bbb-2003-4fc6-8b8f-58d916ae1b22",
+                    "editorType": "edge",
+                    "id": "546a2738-a3e2-4374-a079-7e4d36d59e66",
+                    "edgeWidth": 5,
+                    "type": "normal"
+                }
+            ],
+            "editorType": "node"
+        },
+        {
+            "id": "23fc6dbc-118a-4ff2-be1a-9f68831de771",
+            "position": {
+                "x": 673,
+                "y": 428
+            },
+            "connections": [
+                {
+                    "connectionNodeId": "23fc6dbc-118a-4ff2-be1a-9f68831de771",
+                    "editorType": "edge",
+                    "id": "06b82e51-582f-40bc-a50e-9194336f1bd6",
+                    "edgeWidth": 5,
+                    "type": "normal"
+                },
+                {
+                    "connectionNodeId": "2f47b1bf-88bc-4041-a1d2-b473eaef002c",
+                    "editorType": "edge",
+                    "id": "a956d5ed-068d-4ff0-9453-75920bccbb7f",
+                    "edgeWidth": 5,
+                    "type": "normal"
+                },
+                {
+                    "connectionNodeId": "30618cb4-d288-4ddd-9108-2f1647aefc5d",
+                    "editorType": "edge",
+                    "id": "a65e486a-b69f-4074-9891-e53138e30159",
+                    "edgeWidth": 5,
+                    "type": "normal"
+                }
+            ],
+            "editorType": "node"
+        },
+        {
+            "id": "300d42fb-ac60-4efd-9153-dff967cde6ef",
+            "position": {
+                "x": 507,
+                "y": 225
+            },
+            "connections": [
+                {
+                    "connectionNodeId": "300d42fb-ac60-4efd-9153-dff967cde6ef",
+                    "editorType": "edge",
+                    "id": "ccdbd8ee-74d2-4ff6-89e6-73968aed6621",
+                    "edgeWidth": 5,
+                    "type": "normal"
+                },
+                {
+                    "connectionNodeId": "1b070ecc-ed3e-4123-b710-417d6d69fec3",
+                    "editorType": "edge",
+                    "id": "95b90a92-cb96-4ab4-8de4-0f8490bac92a",
+                    "edgeWidth": 5,
+                    "type": "normal"
+                }
+            ],
+            "editorType": "node"
+        }
+    ],
+    "zones": [
+        {
+            "startPoint": {
+                "x": 792,
+                "y": 172
+            },
+            "width": 298,
+            "height": 542,
+            "color": "green",
+            "id": "82653f55-f13b-442b-8bf4-3b5ca3a73731",
+            "editorType": "zone",
+            "opacity": 0.2,
+            "type": "none"
+        }
+    ],
+    "props": [
+        {
+            "id": "3d487058-9657-4f74-8777-e081cf5b7e4c",
+            "name": "basic house",
+            "x": 691,
+            "y": 256,
+            "rotation": 0,
+            "parentPoint": {
+                "x": 0,
+                "y": 0
+            },
+            "editorType": "prop"
+        },
+        {
+            "id": "d9b87c3d-6bd9-4443-bdd3-27556bbb8bce",
+            "name": "basic house",
+            "x": 530,
+            "y": 426,
+            "rotation": 0,
+            "parentPoint": {
+                "x": 0,
+                "y": 0
+            },
+            "editorType": "prop"
+        },
+        {
+            "id": "169f8eb3-25b6-465c-9602-c5ad1a673891",
+            "name": "basic house",
+            "x": 727,
+            "y": 409,
+            "rotation": 0,
+            "parentPoint": {
+                "x": 0,
+                "y": 0
+            },
+            "editorType": "prop"
+        },
+        {
+            "id": "3eb5dc02-ec68-4cc9-a8e5-9f17f22d28e7",
+            "name": "basic house",
+            "x": 779,
+            "y": 567,
+            "rotation": 0,
+            "parentPoint": {
+                "x": 0,
+                "y": 0
+            },
+            "editorType": "prop"
+        },
+        {
+            "id": "6f3f4783-5d48-4bd2-9e13-9b053465fcea",
+            "name": "basic house",
+            "x": 921,
+            "y": 403,
+            "rotation": 0,
+            "parentPoint": {
+                "x": 0,
+                "y": 0
+            },
+            "editorType": "prop"
+        },
+        {
+            "id": "131e1c5c-dbcc-4ef5-80f0-9df2f4e2c799",
+            "name": "skyscraper",
+            "x": 629,
+            "y": 386,
+            "rotation": 0,
+            "parentPoint": {
+                "x": 0,
+                "y": 0
+            },
+            "editorType": "prop"
+        },
+        {
+            "id": "8991d8ba-b665-44b7-8b0d-6f4f22df7f63",
+            "name": "skyscraper",
+            "x": 675,
+            "y": 346,
+            "rotation": 0,
+            "parentPoint": {
+                "x": 0,
+                "y": 0
+            },
+            "editorType": "prop"
+        },
+        {
+            "id": "1055f8d6-9816-4d22-b4eb-bb0cc495a51e",
+            "name": "skyscraper",
+            "x": 564,
+            "y": 313,
+            "rotation": 0,
+            "parentPoint": {
+                "x": 0,
+                "y": 0
+            },
+            "editorType": "prop"
+        },
+        {
+            "id": "d1389251-868a-4d05-a867-f432206a445d",
+            "name": "police station",
+            "x": 873,
+            "y": 278,
+            "rotation": 0,
+            "parentPoint": {
+                "x": 0,
+                "y": 0
+            },
+            "editorType": "prop"
+        }
+    ]
+}
