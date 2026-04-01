@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+      "outDir": "./server/dist",
+      "rootDir": "./server/src",
+      "target": "ES6",
+      "lib": [
+        "dom",
+        "dom.iterable",
+        "esnext"
+      ],
+      "allowJs": true,
+      "skipLibCheck": true,
+      "esModuleInterop": true,
+      "module": "esnext",
+      "strict": true,
+      "allowArbitraryExtensions": true,
+      "moduleResolution": "node",
+      "paths": {
+        "@dist/*": ["./server/dist/*"]
+  
+      },
+    },
+    "include": [
+      "server/src"
+    ],
+    "exclude": ["node_modules", "./server/dist", "**/dist/*"]
+  }

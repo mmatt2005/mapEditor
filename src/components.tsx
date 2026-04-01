@@ -1,7 +1,7 @@
 import { CheckIcon } from "lucide-react"
 import { useState } from "react"
 import { loadMap } from "./loadMap"
-import { app, uiManager } from "./main"
+import { app, saveMap, uiManager } from "./main"
 import { EDGE_TYPES, PROPS, ZONE_TYPES, type Edge, type GameData, type Zone } from "./types"
 
 export function SelectedNodeUI() {
@@ -41,12 +41,15 @@ export function RightMenuButtons() {
             uiManager.graphManager.nodes.length >= 1 && <>
                 <button
                     className='bg-blue-500 p-1 cursor-pointer'
-                    onClick={() => {
-                        const exportObject: GameData = { mapGraph: uiManager.graphManager.nodes, zones: uiManager.zoneManager.zones, props: uiManager.propsManager.props}
-                        navigator.clipboard.writeText(JSON.stringify(exportObject))
-                        console.log("Copied!")
+                    type="button"
+                    onClick={async (e) => {
+                        e.preventDefault()
+                        const {status} = await saveMap(uiManager.currentMap)
+                        if (status === 200) {
+                            console.log("Successfully saved map!")
+                        } else console.log("Failed to save map...")
                     }}
-                >Export</button>
+                >Save</button>
                 <button
                     className='bg-gray-400 p-1 cursor-pointer'
                     onClick={() => {
@@ -348,7 +351,7 @@ function LeftMenuPopupMapOptionsSelected() {
             <div
                 className="bg-black/40 p-1 cursor-pointer hover:bg-black/60 transition-opacity flex flex-row items-center"
                 onClick={() => {
-                    loadMap("city")
+                    loadMap("CITY")
                 }}
             >
                 <div className="">
@@ -356,13 +359,13 @@ function LeftMenuPopupMapOptionsSelected() {
                     <p>A city</p>
                 </div>
                 {
-                    uiManager.currentMap === "city" && <CheckIcon className='ml-auto' />
+                    uiManager.currentMap === "CITY" && <CheckIcon className='ml-auto' />
                 }
             </div>
             <div
                 className="bg-black/40 p-1 cursor-pointer hover:bg-black/60 transition-opacity flex flex-row items-center"
                 onClick={() => {
-                    loadMap("smallTown")
+                    loadMap("SMALL_TOWN")
                 }}
             >
                 <div className="">
@@ -370,7 +373,7 @@ function LeftMenuPopupMapOptionsSelected() {
                     <p>A small town</p>
                 </div>
                 {
-                    uiManager.currentMap === "smallTown" && <CheckIcon className='ml-auto' />
+                    uiManager.currentMap === "SMALL_TOWN" && <CheckIcon className='ml-auto' />
                 }
             </div>
         </div>

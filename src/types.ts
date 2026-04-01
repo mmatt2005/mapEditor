@@ -36,7 +36,7 @@ export interface Prop extends EditorDefaults<"prop"> {
     y: number
     rotation: number
     name: (typeof PROPS)[number]["name"]
-    parentPoint: {x: number, y: number}
+    parentPoint: { x: number, y: number }
 }
 
 export interface GameData {
@@ -47,7 +47,11 @@ export interface GameData {
 
 export const EDGE_TYPES: Edge["type"][] = ["normal", "highway"]
 
-export type GameMapOptions = "city" | "smallTown"
+export const GameMapOptions = {
+    SMALL_TOWN: "map_smallTown.json",
+    CITY: "map_city.json"
+} as const;
+
 
 
 export const PROPS: {

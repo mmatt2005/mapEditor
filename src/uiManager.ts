@@ -3,9 +3,8 @@ import { v4 as uuidv4 } from "uuid"
 import { GraphManager } from "./graphManager"
 import { app } from "./main"
 import { PropsManager } from "./propsManager"
-import { GameObjectsZIndex, type Edge, type GameMapOptions, type Node, type Prop, type Zone } from "./types"
+import { GameObjectsZIndex, GameMapOptions, type Edge, type Node, type Prop, type Zone } from "./types"
 import { ZoneManager } from "./zoneManager"
-import { loadMap } from "./loadMap"
 
 export class UiManager {
     graphManager: GraphManager = new GraphManager()
@@ -14,7 +13,7 @@ export class UiManager {
     selected: Node | Edge | Zone | Prop | null = null
     isCtrlKeyDown: boolean = false
     sideMenu: { visibile: boolean, selected: "map" | "node" | "edge" | "zone" | "place-prop" | "prop" | null } = { visibile: false, selected: null }
-    currentMap: GameMapOptions = "city"
+    currentMap: keyof (typeof GameMapOptions) = "CITY"
 
     constructor() {
         document.addEventListener("keydown", event => {

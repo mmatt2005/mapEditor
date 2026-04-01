@@ -1,9 +1,9 @@
 import cityMap from "../public/map_city.json"
 import smallTownMap from "../public/map_smallTown.json"
 import { app, uiManager } from "./main"
-import type { GameMapOptions, GameData } from "./types"
-
-export function loadMap(selectedMap: GameMapOptions = uiManager.currentMap): void {
+import type { GameData } from "./types"
+import {GameMapOptions} from "./types"
+export function loadMap(selectedMap: keyof (typeof GameMapOptions) = uiManager.currentMap): void {
     // Handles the case where we've already loaded a map and were loading a new one so we need clear out the previous map first.
     app.stage.removeChildren()
     uiManager.graphManager.nodes = []
@@ -12,9 +12,9 @@ export function loadMap(selectedMap: GameMapOptions = uiManager.currentMap): voi
 
     let data = cityMap as GameData
     if (selectedMap) {
-        if (selectedMap === "city") {
+        if (selectedMap === "CITY") {
             data = cityMap as GameData
-        } else if (selectedMap === "smallTown") {
+        } else if (selectedMap === "SMALL_TOWN") {
             data = smallTownMap as GameData
         }
     }

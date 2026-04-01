@@ -30,6 +30,9 @@ export default function App() {
 
   return <>
     <div className="absolute top-0 w-screen h-20 bg-black/25 flex items-center gap-4 ">
+      {
+        ui.currentMap
+      }
       <SelectedNodeUI />
       <RightMenuButtons />
       <LeftMenuPopup />
