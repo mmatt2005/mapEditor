@@ -73,7 +73,8 @@ export const PROPS: {
     ]
 
 export enum GameObjectsZIndex {
-    zone = 1,
+    background = 1,
+    zone,
     edge,
     point,
     prop

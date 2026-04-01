@@ -1,7 +1,7 @@
 import { Circle, Graphics, Point } from "pixi.js"
 import { v4 as uuidv4 } from "uuid"
 import { GraphManager } from "./graphManager"
-import { app } from "./main"
+import { app, viewport, worldLayer } from "./main"
 import { PropsManager } from "./propsManager"
 import { GameObjectsZIndex, GameMapOptions, type Edge, type Node, type Prop, type Zone } from "./types"
 import { ZoneManager } from "./zoneManager"
@@ -28,9 +28,9 @@ export class UiManager {
             }
         })
 
-        app.canvas.addEventListener("click", event => {
+        viewport.on("click", event => {
             if (this.isCtrlKeyDown) {
-                const position = new Point(event.clientX, event.clientY)
+                const position = viewport.toWorld(event.global.x, event.global.y)
                 const id = uuidv4()
 
                 for (const pt of this.graphManager.nodes) {
@@ -77,7 +77,7 @@ export class UiManager {
 
             this.updateUi()
         })
-        app.stage.addChild(node)
+        worldLayer.addChild(node)
     }
 
     drawEdge(pt1: Point, pt2: Point, edgeId: string): void {
@@ -110,9 +110,9 @@ export class UiManager {
         edgeGraphic.lineTo(pt2.x, pt2.y)
         edgeGraphic.stroke({ color: "blue", width: edge.edgeWidth })
         edgeGraphic.zIndex = GameObjectsZIndex.edge
-        app.stage.addChild(edgeGraphic)
+        worldLayer.addChild(edgeGraphic)
 
-        app.stage.addChild(edgeHitbox)
+        worldLayer.addChild(edgeHitbox)
     }
 
     reDrawEdge(edgeId: Edge["id"]): void {
@@ -129,14 +129,14 @@ export class UiManager {
             return
         }
 
-        app.stage.children.filter(e => e instanceof EdgeGraphics).forEach(e => {
+        worldLayer.children.filter(e => e instanceof EdgeGraphics).forEach(e => {
             if (e.id === edgeId) {
                 // Re draw the edge itself
                 e.clear()
                 e.moveTo(node1.position.x, node1.position.y)
                 e.lineTo(node2.position.x, node2.position.y)
                 e.stroke({ color: "blue", width: edge.edgeWidth })
-                app.stage.addChild(e)
+                worldLayer.addChild(e)
             }
         })
     }

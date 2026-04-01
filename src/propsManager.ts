@@ -1,6 +1,6 @@
 import { Assets, Sprite, Texture } from "pixi.js";
 import { v4 as uuidv4 } from "uuid";
-import { app, uiManager } from "./main";
+import { app, uiManager, viewport, worldLayer } from "./main";
 import { GameObjectsZIndex, PROPS, type Prop } from "./types";
 
 export class PropsManager {
@@ -12,9 +12,10 @@ export class PropsManager {
     constructor() {
         this.loadSpriteSheet()
 
-        document.addEventListener("mousemove", (event) => {
+        viewport.addEventListener("mousemove", (event) => {
             if (this.selectedProp) {
-                this.selectedProp.position.set(event.clientX, event.clientY)
+                const test = viewport.toWorld(event.global.x, event.global.y)
+                this.selectedProp.position.set(test.x, test.y)
             }
         })
 
@@ -30,9 +31,12 @@ export class PropsManager {
             }
         })
 
-        app.canvas.addEventListener("click", (event) => {
+        viewport.on("click", (event) => {
+
+
             if (this.isBackTickKeyDown) {
-                console.log(event.clientX, event.clientY)
+                const {x, y} = viewport.toWorld(event.global.x, event.global.y)
+                console.log(x, y)
             }
 
             if (this.selectedProp) {
@@ -69,7 +73,7 @@ export class PropsManager {
             uiManager.showSideMenu("prop")
             uiManager.updateUi()
         })
-        app.stage.addChild(propSprite)
+        worldLayer.addChild(propSprite)
 
     }
 
@@ -108,7 +112,7 @@ export class PropsManager {
         })
 
 
-        app.stage.addChild(propSprite)
+        worldLayer.addChild(propSprite)
 
         this.unselectProp()
     }
@@ -124,7 +128,7 @@ export class PropsManager {
 
         const propId = uuidv4()
         const propSprite = new PropSprite(propTexture, propId, propName)
-        app.stage.addChild(propSprite)
+        worldLayer.addChild(propSprite)
 
         this.selectedProp = propSprite
         uiManager.updateUi()
@@ -132,7 +136,7 @@ export class PropsManager {
 
     unselectProp(): void {
         if (this.selectedProp) {
-            app.stage.removeChild(this.selectedProp)
+            worldLayer.removeChild(this.selectedProp)
             this.selectedProp = null
             uiManager.updateUi()
         }
@@ -162,7 +166,7 @@ export class PropsManager {
             return
         }
 
-        const getPropSprite = app.stage.children.filter(c => c instanceof PropSprite).find(prop => prop.propId === propId)
+        const getPropSprite = worldLayer.children.filter(c => c instanceof PropSprite).find(prop => prop.propId === propId)
         if (!getPropSprite) {
             console.log("Failed to re draw prop due to not finding prop sprite")
             return
@@ -200,14 +204,14 @@ export class PropsManager {
         this.props = this.props.filter(prop => prop.id !== propId)
         console.log(this.props)
 
-        const getPropSprite = app.stage.children.filter(c => c instanceof PropSprite).find(prop => prop.propId === propId)
+        const getPropSprite = worldLayer.children.filter(c => c instanceof PropSprite).find(prop => prop.propId === propId)
         console.log(getPropSprite?.propId)
         if (!getPropSprite) {
             console.log("Failed to delete prop due to not finding prop sprite")
             return
         }
 
-        app.stage.removeChild(getPropSprite)
+        worldLayer.removeChild(getPropSprite)
 
         uiManager.updateUi()
     }

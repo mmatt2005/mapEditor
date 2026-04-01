@@ -1,19 +1,20 @@
+import { Assets, Sprite } from "pixi.js"
 import cityMap from "../public/map_city.json"
 import smallTownMap from "../public/map_smallTown.json"
-import { app, uiManager } from "./main"
+import { app, uiManager, viewport, viewportBorder, worldLayer } from "./main"
 import type { GameData } from "./types"
-import {GameMapOptions} from "./types"
-export function loadMap(selectedMap: keyof (typeof GameMapOptions) = uiManager.currentMap): void {
+import {GameMapOptions, GameObjectsZIndex} from "./types"
+export async function loadMap(selectedMap: keyof (typeof GameMapOptions) = uiManager.currentMap): Promise<void> {
     // Handles the case where we've already loaded a map and were loading a new one so we need clear out the previous map first.
-    app.stage.removeChildren()
+    worldLayer.removeChildren()
     uiManager.graphManager.nodes = []
     uiManager.zoneManager.zones = []
     uiManager.propsManager.props = []
 
-    let data = cityMap as GameData
+    let data = cityMap as unknown as GameData
     if (selectedMap) {
         if (selectedMap === "CITY") {
-            data = cityMap as GameData
+            data = cityMap as unknown as GameData
         } else if (selectedMap === "SMALL_TOWN") {
             data = smallTownMap as GameData
         }
@@ -60,7 +61,13 @@ export function loadMap(selectedMap: keyof (typeof GameMapOptions) = uiManager.c
         uiManager.propsManager.loadProp(prop.id)
     })
 
-
+    // Draw the background
+    const texutre = await Assets.load("/assets/grassbg.png")
+    const background = new Sprite(texutre)
+    background.zIndex = GameObjectsZIndex.background
+    background.setSize(viewport.worldWidth, viewport.worldHeight)
+    worldLayer.addChild(background)
+    
     uiManager.currentMap = selectedMap
     uiManager.updateUi()
 }

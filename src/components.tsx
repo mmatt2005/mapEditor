@@ -1,7 +1,7 @@
 import { CheckIcon } from "lucide-react"
 import { useState } from "react"
 import { loadMap } from "./loadMap"
-import { app, saveMap, uiManager } from "./main"
+import { app, saveMap, uiManager, viewport, worldLayer } from "./main"
 import { EDGE_TYPES, PROPS, ZONE_TYPES, type Edge, type GameData, type Zone } from "./types"
 
 export function SelectedNodeUI() {
@@ -56,7 +56,7 @@ export function RightMenuButtons() {
                         uiManager.graphManager.nodes = []
                         uiManager.zoneManager.zones = []
                         uiManager.propsManager.props = []
-                        app.stage.removeChildren()
+                        worldLayer.removeChildren()
                         uiManager.updateUi()
                     }}
                 >Clear Canvas</button>

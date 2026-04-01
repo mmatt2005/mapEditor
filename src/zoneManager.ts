@@ -1,5 +1,5 @@
 import { Graphics, Point } from "pixi.js"
-import { app, uiManager } from "./main"
+import { app, uiManager, viewport, worldLayer } from "./main"
 import { v4 as uuidv4 } from "uuid"
 import { GameObjectsZIndex, type Zone } from "./types"
 
@@ -9,21 +9,29 @@ export class ZoneManager {
     mouseDownPosition: Point | null = null
     mousePosition: Point | null = null
     zones: Zone[] = []
+    defaultFillColor: string = "white"
 
     constructor() {
-        document.addEventListener("mousemove", event => {
-            this.mousePosition = new Point(event.clientX, event.clientY)
+        viewport.addEventListener("mousemove", event => {
+            const position = viewport.toWorld(event.global.x, event.global.y)
+            this.mousePosition = position
         })
 
-        document.addEventListener("mousedown", (event) => {
+        viewport.addEventListener("mousedown", (event) => {
+            // Only the left-mouse button can trigger this event.
+            if (event.button !== 0) return
+
             this.isMouseDown = true
-            this.mouseDownPosition = new Point(event.clientX, event.clientY)
+            const position = viewport.toWorld(event.global.x, event.global.y)
+            this.mouseDownPosition = position
+            viewport.plugins.pause("drag")
         })
 
         document.addEventListener("mouseup", () => {
             const resetState = () => {
                 this.isMouseDown = false
                 this.mouseDownPosition = null
+                viewport.plugins.resume("drag")
                 squareArea.clear()
             }
 
@@ -51,7 +59,7 @@ export class ZoneManager {
                         startPoint: new Point(startX, startY),
                         width: zoneWidth,
                         height: zoneHeight,
-                        color: "green",
+                        color: this.defaultFillColor,
                         id: uuidv4(),
                         editorType: "zone",
                         opacity: 0.7,
@@ -78,7 +86,7 @@ export class ZoneManager {
         })
 
         const squareArea = new Graphics()
-        app.stage.addChild(squareArea)
+        worldLayer.addChild(squareArea)
         app.ticker.add((ticker) => {
             if (this.isShiftKeyDown && this.isMouseDown) {
                 if (!this.mousePosition || !this.mouseDownPosition) return
@@ -90,9 +98,9 @@ export class ZoneManager {
                 const mouseX = Math.abs(this.mousePosition.x - this.mouseDownPosition.x)
                 const mouseY = Math.abs(this.mousePosition.y - this.mouseDownPosition.y)
                 squareArea.rect(startX, startY, mouseX, mouseY)
-                squareArea.fill("green")
+                squareArea.fill(this.defaultFillColor)
                 squareArea.alpha = 0.5
-                app.stage.addChild(squareArea)
+                worldLayer.addChild(squareArea)
             }
         })
     }
@@ -113,7 +121,7 @@ export class ZoneManager {
             uiManager.sideMenu.selected = "zone"
             uiManager.updateUi()
         })
-        app.stage.addChild(zoneGraphic)
+        worldLayer.addChild(zoneGraphic)
     }
 
     updateZone(zoneId: Zone["id"], updatedZone: Zone): void {
@@ -141,7 +149,7 @@ export class ZoneManager {
         }
 
 
-        app.stage.children.filter(c => c instanceof ZoneGraphic).forEach(z => {
+        worldLayer.children.filter(c => c instanceof ZoneGraphic).forEach(z => {
             if (z.id === zoneId) {
                 z.clear()
                 z.rect(zone.startPoint.x, zone.startPoint.y, zone.width, zone.height)
@@ -161,7 +169,7 @@ export class ZoneManager {
             console.log("failed to delete zone due to not finding zone object.")
             return
         }
-        const zoneGraphic = app.stage.children.filter(c => c instanceof ZoneGraphic).find(z => z.id === zoneId)
+        const zoneGraphic = worldLayer.children.filter(c => c instanceof ZoneGraphic).find(z => z.id === zoneId)
         if (!zoneGraphic) {
             console.log("Failed to delete zone due to not finding zone graphic")
             return
@@ -171,7 +179,7 @@ export class ZoneManager {
         this.zones = this.zones.filter(z => z.id !== zoneId)
 
         // Remove from the pixijs canvas
-        app.stage.removeChild(zoneGraphic)
+        worldLayer.removeChild(zoneGraphic)
 
         uiManager.updateUi()
     }
