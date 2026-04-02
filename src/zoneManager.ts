@@ -1,22 +1,15 @@
 import { Graphics, Point } from "pixi.js"
-import { app, uiManager, viewport, worldLayer } from "./main"
+import { app, eventsManager, uiManager, viewport, worldLayer } from "./main"
 import { v4 as uuidv4 } from "uuid"
 import { GameObjectsZIndex, type Zone } from "./types"
+import { GAME_VALUES } from "./constants"
 
 export class ZoneManager {
-    isShiftKeyDown: boolean = false
     isMouseDown: boolean = false
     mouseDownPosition: Point | null = null
-    mousePosition: Point | null = null
     zones: Zone[] = []
-    defaultFillColor: string = "white"
 
     constructor() {
-        viewport.addEventListener("mousemove", event => {
-            const position = viewport.toWorld(event.global.x, event.global.y)
-            this.mousePosition = position
-        })
-
         viewport.addEventListener("mousedown", (event) => {
             // Only the left-mouse button can trigger this event.
             if (event.button !== 0) return
@@ -35,31 +28,31 @@ export class ZoneManager {
                 squareArea.clear()
             }
 
-            if (this.isShiftKeyDown) {
-                if (!this.mouseDownPosition || !this.mousePosition) {
+            if (eventsManager.isShiftKeyDown) {
+                if (!this.mouseDownPosition || !eventsManager.mousePosition) {
                     console.log("Failed to create zone due to not having one of the two required mouse positions")
                     resetState()
                     return
                 }
 
-                const zoneWidth = Math.abs(this.mouseDownPosition.x - this.mousePosition.x)
-                const zoneHeight = Math.abs(this.mouseDownPosition.y - this.mousePosition.y)
+                const zoneWidth = Math.abs(this.mouseDownPosition.x - eventsManager.mousePosition.x)
+                const zoneHeight = Math.abs(this.mouseDownPosition.y - eventsManager.mousePosition.y)
 
-                if (zoneWidth <= 25 || zoneHeight <= 25) {
+                if (zoneWidth <= GAME_VALUES.MIN_ZONE_SIZE || zoneHeight <= GAME_VALUES.MIN_ZONE_SIZE) {
                     console.log(`Failed to create zone due to too small of a width or height, Width: ${zoneWidth}, Height: ${zoneHeight}`)
                     resetState()
                     return
                 }
 
-                const startX = Math.min(this.mouseDownPosition.x, this.mousePosition.x)
-                const startY = Math.min(this.mouseDownPosition.y, this.mousePosition.y)
+                const startX = Math.min(this.mouseDownPosition.x, eventsManager.mousePosition.x)
+                const startY = Math.min(this.mouseDownPosition.y, eventsManager.mousePosition.y)
 
                 this.addZone(
                     {
                         startPoint: new Point(startX, startY),
                         width: zoneWidth,
                         height: zoneHeight,
-                        color: this.defaultFillColor,
+                        color: GAME_VALUES.DEFAULT_ZONE_COLOR,
                         id: uuidv4(),
                         editorType: "zone",
                         opacity: 0.7,
@@ -73,32 +66,20 @@ export class ZoneManager {
             resetState()
         })
 
-        document.addEventListener("keydown", event => {
-            if (event.key === "Shift") {
-                this.isShiftKeyDown = true
-            }
-        })
-
-        document.addEventListener("keyup", event => {
-            if (event.key === "Shift") {
-                this.isShiftKeyDown = false
-            }
-        })
-
         const squareArea = new Graphics()
         worldLayer.addChild(squareArea)
-        app.ticker.add((ticker) => {
-            if (this.isShiftKeyDown && this.isMouseDown) {
-                if (!this.mousePosition || !this.mouseDownPosition) return
+        app.ticker.add(() => {
+            if (eventsManager.isShiftKeyDown && this.isMouseDown) {
+                if (!eventsManager.mousePosition || !this.mouseDownPosition) return
 
                 squareArea.clear()
-                const startX = Math.min(this.mousePosition.x, this.mouseDownPosition.x)
-                const startY = Math.min(this.mousePosition.y, this.mouseDownPosition.y)
+                const startX = Math.min(eventsManager.mousePosition.x, this.mouseDownPosition.x)
+                const startY = Math.min(eventsManager.mousePosition.y, this.mouseDownPosition.y)
 
-                const mouseX = Math.abs(this.mousePosition.x - this.mouseDownPosition.x)
-                const mouseY = Math.abs(this.mousePosition.y - this.mouseDownPosition.y)
+                const mouseX = Math.abs(eventsManager.mousePosition.x - this.mouseDownPosition.x)
+                const mouseY = Math.abs(eventsManager.mousePosition.y - this.mouseDownPosition.y)
                 squareArea.rect(startX, startY, mouseX, mouseY)
-                squareArea.fill(this.defaultFillColor)
+                squareArea.fill(GAME_VALUES.DEFAULT_ZONE_COLOR)
                 squareArea.alpha = 0.5
                 worldLayer.addChild(squareArea)
             }

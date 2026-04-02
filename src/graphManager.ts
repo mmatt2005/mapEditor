@@ -1,6 +1,7 @@
 import { Point } from "pixi.js";
 import { uiManager } from "./main";
 import type { Edge, Node } from "./types";
+import { GAME_VALUES } from "./constants";
 
 export class GraphManager {
     nodes: Node[] = []
@@ -176,7 +177,7 @@ export class GraphManager {
         //     }
         // }
 
-        const edgeObject: Edge = { connectionNodeId: connectsTo, editorType: "edge", id: edgeId, edgeWidth: 5, type: "normal" }
+        const edgeObject: Edge = { connectionNodeId: connectsTo, editorType: "edge", id: edgeId, edgeWidth: GAME_VALUES.EDGE_WIDTH, type: "normal" }
         connectingNode.connections.push(edgeObject)
         node.connections.push(edgeObject)
     }

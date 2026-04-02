@@ -1,127 +1,19 @@
 import { CheckIcon } from "lucide-react"
 import { useState } from "react"
-import { loadMap } from "./loadMap"
-import { app, saveMap, uiManager, viewport, worldLayer } from "./main"
-import { EDGE_TYPES, PROPS, ZONE_TYPES, type Edge, type GameData, type Zone } from "./types"
+import { loadMap } from "../utils/loadMap"
+import { app, uiManager, worldLayer } from "../main"
+import { EDGE_TYPES, PROPS, ZONE_TYPES, type Edge, type Zone } from "../types"
 
-export function SelectedNodeUI() {
-    return <>
-        {
-            uiManager.selected && uiManager.selected.editorType === "node" && <div className='flex items-center gap-1'>
-                <p>Selected: ({uiManager.selected.position.x}, {uiManager.selected.position.y})</p>
-                <button
-                    className='bg-gray-500 p-1 cursor-pointer'
-                    onClick={() => {
-                        uiManager.selected = null
-                        uiManager.updateUi()
-                    }}
-                >Remove</button>
-                <button
-                    className="bg-green-500 p-1"
-                    // onClick={() => {
-                    //     if (uiManager.selected?.editorType === "node") {
-                    //         car.moveTo(uiManager.selected)
-                    //     }
-                    // }}
-                >Move to</button>
-            </div>
-        }
-        {
-            uiManager.graphManager.nodes.length >= 1 && <div className="">
-                <p>{uiManager.graphManager.nodes.length} Nodes</p>
-
-            </div>
-        }
-    </>
-}
-
-export function RightMenuButtons() {
-    return <div className="ml-auto mr-1 space-x-4">
-        {
-            uiManager.graphManager.nodes.length >= 1 && <>
-                <button
-                    className='bg-blue-500 p-1 cursor-pointer'
-                    type="button"
-                    onClick={async (e) => {
-                        e.preventDefault()
-                        const {status} = await saveMap(uiManager.currentMap)
-                        if (status === 200) {
-                            console.log("Successfully saved map!")
-                        } else console.log("Failed to save map...")
-                    }}
-                >Save</button>
-                <button
-                    className='bg-gray-400 p-1 cursor-pointer'
-                    onClick={() => {
-                        uiManager.graphManager.nodes = []
-                        uiManager.zoneManager.zones = []
-                        uiManager.propsManager.props = []
-                        worldLayer.removeChildren()
-                        uiManager.updateUi()
-                    }}
-                >Clear Canvas</button>
-            </>
-        }
-        <button
-            className='bg-gray-400 p-1 cursor-pointer'
-            onClick={() => {
-                uiManager.showSideMenu("map")
-                uiManager.updateUi()
-            }}
-        >Load Map</button>
-        <button
-            className='bg-gray-400 p-1 cursor-pointer'
-            onClick={() => {
-                uiManager.showSideMenu("place-prop")
-                uiManager.updateUi()
-            }}
-
-        >Place Props</button>
-
-
-    </div>
-}
-
-export function LeftMenuPopup() {
-    return uiManager.sideMenu.visibile && <div className="absolute top-20 h-[calc(100vh-80px)] p-1 w-40 bg-black/25 flex flex-col">
-        {
-            uiManager.sideMenu.selected === "map" && <LeftMenuPopupMapOptionsSelected />
-        }
-        {
-            uiManager.sideMenu.selected === "edge" && uiManager.selected?.editorType === "edge" && <LeftMenuPopupEdgeSelected />
-        }
-        {
-            uiManager.sideMenu.selected === "zone" && <LeftMenuPopupZoneSelected />
-        }
-        {
-            uiManager.sideMenu.selected === "place-prop" && <LeftMenuPopUpPlaceProps />
-        }
-        {
-            uiManager.sideMenu.selected === "prop" && <LeftMenuPopUpPropSelected />
-        }
-        <button
-            className='bg-black/50 w-full h-10 cursor-pointer mt-auto'
-            onClick={() => {
-                uiManager.hideSideMenu()
-                uiManager.updateUi()
-            }}
-        >Close</button>
-    </div>
-
-}
-
-function LeftMenuPopUpLabel({ label }: { label: string }) {
+export function LeftMenuPopUpLabel({ label }: { label: string }) {
     return <h1 className="text-xl font-bold">{label}</h1>
 }
 
-function LeftMenuPopUpPropSelected() {
+export function LeftMenuPopUpPropSelected() {
     if (!uiManager.selected) return <>Failed to render prop selected due to no selected object</>
     if (uiManager.selected.editorType !== "prop") return <>Failed to render prop selected due to editorType not being prop</>
 
     const prop = uiManager.propsManager.getPropById(uiManager.selected.id)
     if (!prop) return <>No prop...</>
-
-    console.log(prop)
 
     return <>
         <LeftMenuPopUpLabel label="Prop"></LeftMenuPopUpLabel>
@@ -189,7 +81,7 @@ function LeftMenuPopUpPropSelected() {
     </>
 }
 
-function LeftMenuPopUpPlaceProps() {
+export function LeftMenuPopUpPlaceProps() {
 
     return <>
         <LeftMenuPopUpLabel label="Place Props"></LeftMenuPopUpLabel>
@@ -222,7 +114,7 @@ function LeftMenuPopUpPlaceProps() {
     </>
 }
 
-function LeftMenuPopupZoneSelected() {
+export function LeftMenuPopupZoneSelected() {
     const selectedZone = uiManager.selected as Zone
     const zone = uiManager.zoneManager.getZoneById(selectedZone.id)
     if (!zone) {
@@ -241,7 +133,7 @@ function LeftMenuPopupZoneSelected() {
                 className="bg-gray-500 p-1 w-full h-10"
                 value={zoneColor}
                 onChange={(newValue) => {
-                    setZoneColor(prev => newValue.target.value)
+                    setZoneColor(() => newValue.target.value)
                 }}
             />
             <button
@@ -296,7 +188,7 @@ function LeftMenuPopupZoneSelected() {
     </>
 }
 
-function LeftMenuPopupEdgeSelected() {
+export function LeftMenuPopupEdgeSelected() {
     const selectedEdge = uiManager.selected as Edge
     const edge = uiManager.graphManager.getEdgeById(selectedEdge.id)
     if (!edge) {
@@ -344,7 +236,7 @@ function LeftMenuPopupEdgeSelected() {
 }
 
 
-function LeftMenuPopupMapOptionsSelected() {
+export function LeftMenuPopupMapOptionsSelected() {
     return <>
         <div className="flex flex-col gap-4">
 
@@ -379,4 +271,17 @@ function LeftMenuPopupMapOptionsSelected() {
         </div>
 
     </>
+}
+
+export function LeftMenuPopUpDebug() {
+    return <div className="">
+        <LeftMenuPopUpLabel label="Debug" />
+        <div className="flex flex-col gap-2">
+            <label>Current Map: {uiManager.currentMap}</label>
+            <label>Nodes: {uiManager.graphManager.nodes.length} </label>
+            <label>Zones: {uiManager.zoneManager.zones.length}</label>
+            <label>Rendered Sprites: {worldLayer.children.length}</label>
+        </div>
+
+    </div>
 }

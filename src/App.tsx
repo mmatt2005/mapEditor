@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { create } from 'zustand'
 import './App.css'
-import { LeftMenuPopup, RightMenuButtons, SelectedNodeUI } from './components.tsx'
+import { LeftMenuPopup, RightMenuButtons, SelectedNodeUI } from './components/components.tsx'
 import { uiManager } from './main.ts'
 import type { UiManager } from './uiManager.ts'
 
@@ -30,9 +30,6 @@ export default function App() {
 
   return <>
     <div className="absolute top-0 w-screen h-20 bg-black/25 flex items-center gap-4 ">
-      {
-        ui.currentMap
-      }
       <SelectedNodeUI />
       <RightMenuButtons />
       <LeftMenuPopup />

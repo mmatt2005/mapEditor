@@ -6,7 +6,6 @@ import { GameObjectsZIndex, PROPS, type Prop } from "./types";
 export class PropsManager {
     selectedProp: PropSprite | null = null
     props: Prop[] = []
-    isBackTickKeyDown: boolean = false
     spritesheet: Texture | null = null
 
     constructor() {
@@ -19,26 +18,7 @@ export class PropsManager {
             }
         })
 
-        document.addEventListener("keydown", (event) => {
-            if (event.key === "`") {
-                this.isBackTickKeyDown = true
-            }
-        })
-
-        document.addEventListener("keyup", (event) => {
-            if (event.key === "`") {
-                this, this.isBackTickKeyDown = false
-            }
-        })
-
-        viewport.on("click", (event) => {
-
-
-            if (this.isBackTickKeyDown) {
-                const {x, y} = viewport.toWorld(event.global.x, event.global.y)
-                console.log(x, y)
-            }
-
+        viewport.on("click", () => {
             if (this.selectedProp) {
                 this.placeProp(this.selectedProp.propId)
             }
@@ -128,6 +108,7 @@ export class PropsManager {
 
         const propId = uuidv4()
         const propSprite = new PropSprite(propTexture, propId, propName)
+        propSprite.zIndex = GameObjectsZIndex.prop
         worldLayer.addChild(propSprite)
 
         this.selectedProp = propSprite

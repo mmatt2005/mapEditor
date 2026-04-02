@@ -1,9 +1,19 @@
 import { Assets, Sprite } from "pixi.js"
-import cityMap from "../public/map_city.json"
-import smallTownMap from "../public/map_smallTown.json"
-import { app, uiManager, viewport, viewportBorder, worldLayer } from "./main"
-import type { GameData } from "./types"
-import {GameMapOptions, GameObjectsZIndex} from "./types"
+import cityMap from "../../public/map_city.json"
+import smallTownMap from "../../public/map_smallTown.json"
+import { uiManager, viewport, worldLayer } from "../main"
+import type { GameData } from "../types"
+import { GameMapOptions, GameObjectsZIndex } from "../types"
+
+/**
+ * @author mattmichalowski
+ * 4/2/26 9:46am
+ * @description loads the map from the given json file
+ * @export
+ * @async
+ * @param {keyof (typeof GameMapOptions)} [selectedMap=uiManager.currentMap] 
+ * @returns {Promise<void>} 
+ */
 export async function loadMap(selectedMap: keyof (typeof GameMapOptions) = uiManager.currentMap): Promise<void> {
     // Handles the case where we've already loaded a map and were loading a new one so we need clear out the previous map first.
     worldLayer.removeChildren()
@@ -23,6 +33,13 @@ export async function loadMap(selectedMap: keyof (typeof GameMapOptions) = uiMan
     uiManager.graphManager.nodes = data.mapGraph
     uiManager.zoneManager.zones = data.zones
     uiManager.propsManager.props = data.props
+
+        // Draw the background
+    const texutre = await Assets.load("/assets/greenbackground.png")
+    const background = new Sprite(texutre)
+    background.zIndex = GameObjectsZIndex.background
+    background.setSize(viewport.worldWidth, viewport.worldHeight)
+    worldLayer.addChild(background)
 
     // Draw all the edges (lines)
     data.mapGraph.forEach(node => {
@@ -57,17 +74,12 @@ export async function loadMap(selectedMap: keyof (typeof GameMapOptions) = uiMan
     })
 
     // Draw the props
-    data.props.forEach(prop => { 
+    data.props.forEach(prop => {
         uiManager.propsManager.loadProp(prop.id)
     })
 
-    // Draw the background
-    const texutre = await Assets.load("/assets/grassbg.png")
-    const background = new Sprite(texutre)
-    background.zIndex = GameObjectsZIndex.background
-    background.setSize(viewport.worldWidth, viewport.worldHeight)
-    worldLayer.addChild(background)
-    
+
+
     uiManager.currentMap = selectedMap
     uiManager.updateUi()
 }

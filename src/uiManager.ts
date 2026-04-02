@@ -1,9 +1,10 @@
 import { Circle, Graphics, Point } from "pixi.js"
 import { v4 as uuidv4 } from "uuid"
+import { GAME_VALUES } from "./constants"
 import { GraphManager } from "./graphManager"
-import { app, viewport, worldLayer } from "./main"
+import { eventsManager, viewport, worldLayer } from "./main"
 import { PropsManager } from "./propsManager"
-import { GameObjectsZIndex, GameMapOptions, type Edge, type Node, type Prop, type Zone } from "./types"
+import { GameMapOptions, GameObjectsZIndex, type Edge, type Node, type Prop, type Zone } from "./types"
 import { ZoneManager } from "./zoneManager"
 
 export class UiManager {
@@ -11,30 +12,17 @@ export class UiManager {
     zoneManager: ZoneManager = new ZoneManager()
     propsManager: PropsManager = new PropsManager()
     selected: Node | Edge | Zone | Prop | null = null
-    isCtrlKeyDown: boolean = false
-    sideMenu: { visibile: boolean, selected: "map" | "node" | "edge" | "zone" | "place-prop" | "prop" | null } = { visibile: false, selected: null }
+    sideMenu: { visibile: boolean, selected: "map" | "node" | "edge" | "zone" | "place-prop" | "prop" | "debug" | null } = { visibile: false, selected: null }
     currentMap: keyof (typeof GameMapOptions) = "CITY"
 
     constructor() {
-        document.addEventListener("keydown", event => {
-            if (event.key === "Control") {
-                this.isCtrlKeyDown = true
-            }
-        })
-
-        document.addEventListener("keyup", event => {
-            if (event.key === "Control") {
-                this.isCtrlKeyDown = false
-            }
-        })
-
         viewport.on("click", event => {
-            if (this.isCtrlKeyDown) {
+            if (eventsManager.isCtrlKeyDown) {
                 const position = viewport.toWorld(event.global.x, event.global.y)
                 const id = uuidv4()
 
                 for (const pt of this.graphManager.nodes) {
-                    if (this.calculateDistanceBetweenTwoNodes(pt.position, position) <= 50) {
+                    if (this.calculateDistanceBetweenTwoNodes(pt.position, position) <= GAME_VALUES.MIN_DISTANCE_BETWEEN_NODES) {
                         console.log("Failed to draw point due to point being too close to another point...")
                         return
                     }
@@ -56,11 +44,11 @@ export class UiManager {
      */
     drawNode(point: Point, id: string): void {
         const node = new NodeGraphics(id)
-        node.circle(point.x, point.y, 10)
+        node.circle(point.x, point.y, GAME_VALUES.NODE_SIZE)
         node.fill("white")
         node.zIndex = GameObjectsZIndex.point
         node.eventMode = "static"
-        node.hitArea = new Circle(point.x, point.y, 30)
+        node.hitArea = new Circle(point.x, point.y, GAME_VALUES.NODE_HITBOX_SIZE)
         node.on("click", () => {
             const getNode = this.graphManager.getNodeById(node.id)
             if (!getNode) return console.log("Failed to get node so nopoe!")
@@ -87,6 +75,7 @@ export class UiManager {
             return
         }
 
+
         const edgeHitbox = new Graphics()
         edgeHitbox.moveTo(pt1.x, pt1.y)
         edgeHitbox.lineTo(pt2.x, pt2.y)
@@ -108,9 +97,16 @@ export class UiManager {
         const edgeGraphic = new EdgeGraphics(edgeId)
         edgeGraphic.moveTo(pt1.x, pt1.y)
         edgeGraphic.lineTo(pt2.x, pt2.y)
-        edgeGraphic.stroke({ color: "blue", width: edge.edgeWidth })
+        edgeGraphic.stroke({ width: edge.edgeWidth, color: "gray"})
         edgeGraphic.zIndex = GameObjectsZIndex.edge
         worldLayer.addChild(edgeGraphic)
+
+        const dashedLine = new Graphics()
+        dashedLine.moveTo(pt1.x, pt1.y)
+        dashedLine.lineTo(pt2.x, pt2.y)
+        dashedLine.stroke({width: 1, color: "yellow"})
+        dashedLine.zIndex = GameObjectsZIndex.edge
+        worldLayer.addChild(dashedLine)
 
         worldLayer.addChild(edgeHitbox)
     }
