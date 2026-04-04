@@ -1,192 +1,165 @@
-import { Point } from "pixi.js";
-import { uiManager } from "./main";
-import type { Edge, Node } from "./types";
-import { GAME_VALUES } from "./constants";
+import { Circle, Graphics, Point } from "pixi.js"
+import { v4 as uuidv4 } from "uuid"
+import { GAME_VALUES } from "./constants"
+import { eventsManager, graphManager, uiManager, viewport, worldLayer } from "./main"
+import { GameObjectsZIndex, type Edge, type Node, type Zone } from "./types"
+import { ZoneGraphic } from "./zoneManager"
 
 export class GraphManager {
-    nodes: Node[] = []
-    addNode(position: Point, id: string): void {
-        if (this.doesNodeAlreadyExistAtPosition(position)) {
-            console.log(`Failed to add node due to another node already being at position: (${position.x}, ${position.y})`)
+    private selectedNode: Node | null = null
+
+    constructor() {
+        viewport.on("click", (event) => {
+            if (eventsManager.isCtrlKeyDown) {
+                const position = viewport.toWorld(event.global.x, event.global.y)
+                new NodeGraphic().createNodeGraphic(position)
+            }
+        })
+    }
+
+    public getSelectedNode(): Node | null {
+        return this.selectedNode
+    }
+
+    public setSelectedNode(selectedNode: Node | null): void {
+        this.selectedNode = selectedNode
+        uiManager.updateUi()
+    }
+
+    public getZoneGraphic(zoneId: Zone["id"]): ZoneGraphic | null {
+        return worldLayer.children.filter(f => f instanceof ZoneGraphic).find(z => z.id === zoneId) || null
+    }
+
+    public getEdgeGraphic(edgeId: Edge["id"]): EdgeGraphic | null {
+        return worldLayer.children.filter(f => f instanceof EdgeGraphic).find(e => e.id === edgeId) || null
+    }
+
+    public getNodeGraphic(nodeId: Node["id"]): NodeGraphic | null {
+        return worldLayer.children.filter(f => f instanceof NodeGraphic).find(n => n.id === nodeId) || null
+    }
+}
+
+export class EdgeGraphic extends Graphics implements Edge {
+    id: string = uuidv4()
+    edgeWidth: number = GAME_VALUES.EDGE_WIDTH
+    type: Edge["type"] = "normal"
+    editorType: Edge["editorType"] = "edge"
+    node1Id: Node["id"] = ""
+    node2Id: Node["id"] = ""
+    public updateEdge(newEdge: Edge): void {
+        const node1 = graphManager.getNodeGraphic(newEdge.node1Id)
+        const node2 = graphManager.getNodeGraphic(newEdge.node2Id)
+
+        if (!node1 || !node2) {
+            console.log("Failed to updateEdge due to not having required nodes")
             return
         }
-        this.nodes.push(
-            {
-                id: id,
-                position: position,
-                connections: [],
-                editorType: "node"
-            }
-        )
+
+        this.edgeWidth = newEdge.edgeWidth
+
+        this.clear()
+        this.draw(node1, node2)
 
         uiManager.updateUi()
     }
 
-    getNodeById(nodeId: Node["id"]): Node | null {
-        return this.nodes.find(node => node.id === nodeId) || null
+    private handleClick() {
+        uiManager.setSideMenu("edge", this.getEdgeObject())
     }
 
-    getEdgeById(edgeId: Edge["id"]): Edge | null {
-        for (const node of this.nodes) {
-            if (node.connections.length > 0) {
-                for (const connection of node.connections) {
-                    if (connection.id === edgeId) {
-                        return connection
-                    }
-                }
-            }
+    public getEdgeObject(): Edge {
+        return {
+            id: this.id,
+            edgeWidth: this.edgeWidth,
+            type: this.type,
+            editorType: this.editorType,
+            node1Id: this.node1Id,
+            node2Id: this.node2Id
         }
-
-        console.log(`failed to find edge with if of: ${edgeId}`)
-        return null
     }
 
+    public createEdgeGraphic(node1: Node, node2: Node): void {
+        const edgeHitbox = new Graphics()
+        edgeHitbox.moveTo(node1.position.x, node1.position.y)
+        edgeHitbox.lineTo(node2.position.x, node2.position.y)
+        edgeHitbox.stroke({ width: GAME_VALUES.EDGE_WIDTH + 10, alpha: 0.0 })
+        edgeHitbox.eventMode = "static"
+        edgeHitbox.zIndex = GameObjectsZIndex.edgeHitbox
+        edgeHitbox.on("click", () => this.handleClick())
 
-    /**
-     * @description gets a edge (line) from the two nodes that make the edge
-     * @param {Node["id"]} node1Id 
-     * @param {Node["id"]} node2Id 
-     * @returns {(Edge | null)} 
-     */
-    getEdgeByConnectingNodes(node1Id: Node["id"], node2Id: Node["id"]): Edge | null {
-        for (const node of this.nodes) {
-            if (node.connections.length > 0) {
-                for (const connection of node.connections) {
-                    if (node.id === node1Id && connection.connectionNodeId === node2Id) {
-                        return connection
-                    }
-                }
-            }
-        }
-        console.log(`failed to find edge`)
-        return null
+        this.node1Id = node1.id
+        this.node2Id = node2.id
+        this.draw(node1, node2)
+
+        worldLayer.addChild(this)
+        worldLayer.addChild(edgeHitbox)
     }
 
+    private draw(node1: Node, node2: Node): void {
+        // Draw the gray road
+        this.moveTo(node1.position.x, node1.position.y)
+        this.lineTo(node2.position.x, node2.position.y)
+        this.stroke({ width: this.edgeWidth, color: "darkgray" })
+        this.zIndex = GameObjectsZIndex.edge
 
-    /**
-     * @description gets the two Nodes (points) that make up the given edge
-     * @param {Edge["id"]} edgeId 
-     * @returns {({ node1: Node, node2: Node } | null)} 
-     */
-    getConnectionNodesOfEdge(edgeId: Edge["id"]): { node1: Node, node2: Node } | null {
-        let connectionNodes: { node1: Node | null, node2: Node | null } = { node1: null, node2: null }
+        // Draw the Yellow line
+        this.moveTo(node1.position.x, node1.position.y)
+        this.lineTo(node2.position.x, node2.position.y)
+        this.stroke({ width: 5, color: "yellow" })
+    }
+}
 
-        for (const node of this.nodes) {
-            if (node.connections.length > 0) {
-                if (node.connections.some(c => c.id === edgeId)) {
-                    if (!connectionNodes.node1) {
-                        connectionNodes.node1 = node
-                    } else {
-                        connectionNodes.node2 = node
-                        if (connectionNodes.node1 && connectionNodes.node2) {
-                            return { node1: connectionNodes.node1, node2: connectionNodes.node2 }
-                        }
-                    }
-                }
-            }
+export class NodeGraphic extends Graphics implements Node {
+    id: string = uuidv4()
+    editorType: Node["editorType"] = "node"
+
+    private handleClick() {
+        const selectedNode = graphManager.getSelectedNode()
+        if (selectedNode) {
+            new EdgeGraphic().createEdgeGraphic(this.getNodeObject(), selectedNode)
+            graphManager.setSelectedNode(null)
+        } else {
+            graphManager.setSelectedNode(this.getNodeObject())
+            uiManager.setSideMenu("node", this.getNodeObject())
         }
-
-        console.log("Failed to getConnectionNodesOfEdges")
-        return null
     }
 
-
-    /**
-     * @description updates a edge object with a new edge object.
-     * @param {Edge["id"]} edgeId 
-     * @param {Edge} newEdgeObject 
-     */
-    updateEdge(edgeId: Edge["id"], newEdgeObject: Edge): void {
-        let wasUpdated = false
-
-        const getEdge = this.getEdgeById(edgeId)
-        if (!getEdge) {
-            console.log("failed to updateEdge due to not getting edge")
-            return
+    public getNodeObject(): Node {
+        return {
+            id: this.id,
+            position: new Point(this.position.x, this.position.y),
+            editorType: this.editorType,
         }
-
-        this.nodes = this.nodes.map(node => {
-            if (node.connections.length > 0) {
-                if (node.connections.some(c => c.id === edgeId)) {
-                    node.connections = node.connections.map(edge => {
-                        if (edge.id === edgeId) {
-                            wasUpdated = true
-                            return newEdgeObject
-                        }
-                        return edge
-                    })
-                }
-            }
-            return node
-        })
-
-        if (!wasUpdated) {
-            console.log("Failed to update edge object!")
-        }
-
-        uiManager.reDrawEdge(edgeId)
     }
 
-    addNodeConnection(nodeId: Node["id"], connectsTo: Node["id"], edgeId: Edge["id"]): void {
-        const node = this.getNodeById(nodeId)
-        if (!node) {
-            console.log("failed to add node connection due to not finding node!")
-            return
-        }
+    public createNodeGraphic(position: Point): void {
+        this.circle(0, 0, GAME_VALUES.NODE_SIZE)
+        this.fill(GAME_VALUES.DEFAULT_NODE_COLOR)
 
-        if (node.connections.some(connections => connections.connectionNodeId === connectsTo)) {
-            console.log("Failed to addNodeConnection due to node already being connected to node!")
-            return
-        }
+        this.position.set(position.x, position.y)
+        this.zIndex = GameObjectsZIndex.point
 
-        const connectingNode = this.getNodeById(connectsTo)
-        if (!connectingNode) {
-            console.log("Failed to add node connection due to not finding connecting node!")
-            return
-        }
+        this.eventMode = "static"
+        this.hitArea = new Circle(0, 0, GAME_VALUES.NODE_HITBOX_SIZE)
+        this.on("click", this.handleClick)
 
-        if (connectingNode.connections.some(c => c.connectionNodeId === node.id)) {
-            console.log("failed to addNodeConnections due to node already being connected to node...")
-            return
-        }
-
-
-        // for (const n of this.nodes) {
-        //     if (n.connections.length > 0) {
-        //         for (const edge of n.connections) {
-        //             const edgeConnection = this.getNodeById(edge.connectionNodeId)
-        //             if (!edgeConnection) return console.log("No edge connection node..")
-
-        //             const test = checkIntersection(
-        //                 node.position.x, node.position.y, connectingNode.position.x, connectingNode.position.y,
-        //                 n.position.x, n.position.y, edgeConnection.position.x, edgeConnection.position.y
-        //             )
-
-        //             if (test.type === "intersecting") {
-        //                 const dis = uiManager.getClosestNodeToPoint(new Point(test.point.x, test.point.y))
-
-        //                 console.log(dis)
-        //                 if (dis <= 75) {
-        //                     console.log("intercestion point is too close to an actual point...")
-        //                     return
-        //                 }
-        //                 uiManager.drawNode(new Point(test.point.x, test.point.y), "1241")
-
-        //             }
-        //         }
-        //     }
-        // }
-
-        const edgeObject: Edge = { connectionNodeId: connectsTo, editorType: "edge", id: edgeId, edgeWidth: GAME_VALUES.EDGE_WIDTH, type: "normal" }
-        connectingNode.connections.push(edgeObject)
-        node.connections.push(edgeObject)
+        worldLayer.addChild(this)
     }
+}
 
-    doesNodeAlreadyExistAtPosition(position: Point): boolean {
-        return this.nodes.some(n => n.position.x === position.x && n.position.y === position.y)
+
+export class LoadNodeGraphic extends NodeGraphic {
+    constructor(node: Node) {
+        super()
+        this.id = node.id
+        this.createNodeGraphic(node.position)
     }
+}
 
-    isNodeAlreadyConnectedToNode(node1: Node, node2: Node): boolean {
-        return node1.connections.some(c => c.connectionNodeId === node2.id)
+export class LoadEdgeGraphic extends EdgeGraphic {
+    constructor(node1: Node, node2: Node, edge: Edge) {
+        super()
+        this.id = edge.id
+        this.createEdgeGraphic(node1, node2)
     }
 }

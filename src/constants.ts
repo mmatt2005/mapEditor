@@ -1,6 +1,8 @@
 
 const NODE_SIZE = 20
 export const GAME_VALUES = { 
+    // The default color of a node (point)
+    DEFAULT_NODE_COLOR: "white",
     // The size of a node (point)
     NODE_SIZE: NODE_SIZE,
     // The size of a nodes hitbox
@@ -9,6 +11,8 @@ export const GAME_VALUES = {
     MIN_DISTANCE_BETWEEN_NODES: 50,
     // The default color of a zone when first created
     DEFAULT_ZONE_COLOR: "white",
+    // The default opacity of the zone
+    DEFAULT_ZONE_OPACITY: 0.5,
     // The min size in width & height a zone must be inorder to be created
     MIN_ZONE_SIZE: 50,
     // The width of the world (canvas)

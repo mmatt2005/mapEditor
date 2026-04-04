@@ -1,5 +1,7 @@
-import { uiManager } from "../main"
+import { EdgeGraphic, NodeGraphic } from "../graphManager"
+import { uiManager, worldLayer } from "../main"
 import type { GameData } from "../types"
+import { ZoneGraphic } from "../zoneManager"
 
 
 /**
@@ -8,7 +10,17 @@ import type { GameData } from "../types"
  * @returns {GameData} 
  */
 export function exportMap(): GameData {
-    const exportObject: GameData = { mapGraph: uiManager.graphManager.nodes, zones: uiManager.zoneManager.zones, props: uiManager.propsManager.props }
+    const exportObject: GameData = {zones: [], nodes: [], props: [], edges: []}
+
+    for (const child of worldLayer.children) { 
+        if (child instanceof ZoneGraphic) {
+            exportObject.zones.push(child.getZoneObject())
+        } else if (child instanceof NodeGraphic) { 
+            exportObject.nodes.push(child.getNodeObject())
+        }  else if (child instanceof EdgeGraphic) {
+            exportObject.edges.push(child.getEdgeObject())
+        }
+    }
 
     return exportObject
 }

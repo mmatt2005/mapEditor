@@ -91,11 +91,11 @@ export function LeftMenuPopUpPlaceProps() {
                     <div
                         className="bg-gray-500 p-1 cursor-pointer flex flex-row "
                         onClick={() => {
-                            uiManager.propsManager.selectProp(prop.name)
+                            uiManager.propsManager.selectProp(prop.propName)
                         }}
                     >
                         <div className="flex gap-1 items-center">
-                            <p>{prop.name}</p>
+                            <p>{prop.propName}</p>
                         </div>
                     </div>
                 ))
@@ -189,8 +189,8 @@ export function LeftMenuPopupZoneSelected() {
 }
 
 export function LeftMenuPopupEdgeSelected() {
-    const selectedEdge = uiManager.selected as Edge
-    const edge = uiManager.graphManager.getEdgeById(selectedEdge.id)
+    const edge = uiManager.selected as Edge
+    // const edge = uiManager.graphManager.getEdgeById(selectedEdge.id)
     if (!edge) {
         console.log("Failed to find edge for LeftMenuPopupEdgeSelected")
         return <>nope</>
@@ -209,7 +209,7 @@ export function LeftMenuPopupEdgeSelected() {
             onChange={(newValue) => {
                 const newWidth = Number(newValue.target.value)
                 const newEdgeObject: Edge = { ...edge, edgeWidth: newWidth }
-                uiManager.graphManager.updateEdge(edge.id, newEdgeObject)
+                // uiManager.graphManager.updateEdge(edge.id, newEdgeObject)
                 uiManager.updateUi()
             }}
         />
@@ -222,7 +222,7 @@ export function LeftMenuPopupEdgeSelected() {
             value={edge.type}
             onChange={(newValue) => {
                 const newType = newValue.target.value as Edge["type"]
-                uiManager.graphManager.updateEdge(edge.id, { ...edge, type: newType })
+                // uiManager.graphManager.updateEdge(edge.id, { ...edge, type: newType })
                 uiManager.updateUi()
             }}
         >
@@ -278,8 +278,8 @@ export function LeftMenuPopUpDebug() {
         <LeftMenuPopUpLabel label="Debug" />
         <div className="flex flex-col gap-2">
             <label>Current Map: {uiManager.currentMap}</label>
-            <label>Nodes: {uiManager.graphManager.nodes.length} </label>
-            <label>Zones: {uiManager.zoneManager.zones.length}</label>
+            {/* <label>Nodes: {uiManager.graphManager.nodes.length} </label>
+            <label>Zones: {uiManager.zoneManager.zones.length}</label> */}
             <label>Rendered Sprites: {worldLayer.children.length}</label>
         </div>
 

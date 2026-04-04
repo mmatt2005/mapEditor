@@ -1,13 +1,12 @@
 import { Graphics, Point } from "pixi.js"
-import { app, eventsManager, uiManager, viewport, worldLayer } from "./main"
-import { v4 as uuidv4 } from "uuid"
-import { GameObjectsZIndex, type Zone } from "./types"
 import { GAME_VALUES } from "./constants"
+import { app, eventsManager, uiManager, viewport, worldLayer } from "./main"
+import type { Zone } from "./types"
+import { v4 as uuidv4 } from "uuid"
 
 export class ZoneManager {
     isMouseDown: boolean = false
     mouseDownPosition: Point | null = null
-    zones: Zone[] = []
 
     constructor() {
         viewport.addEventListener("mousedown", (event) => {
@@ -47,18 +46,7 @@ export class ZoneManager {
                 const startX = Math.min(this.mouseDownPosition.x, eventsManager.mousePosition.x)
                 const startY = Math.min(this.mouseDownPosition.y, eventsManager.mousePosition.y)
 
-                this.addZone(
-                    {
-                        startPoint: new Point(startX, startY),
-                        width: zoneWidth,
-                        height: zoneHeight,
-                        color: GAME_VALUES.DEFAULT_ZONE_COLOR,
-                        id: uuidv4(),
-                        editorType: "zone",
-                        opacity: 0.7,
-                        type: "none"
-                    }
-                )
+                const zone = new ZoneGraphic(new Point(startX, startY), zoneWidth, zoneHeight)
 
                 squareArea.clear()
             }
@@ -85,92 +73,56 @@ export class ZoneManager {
             }
         })
     }
-
-    addZone(zone: Zone): void {
-        this.zones.push(zone)
-
-        const zoneGraphic = new ZoneGraphic(zone.id)
-        zoneGraphic.rect(zone.startPoint.x, zone.startPoint.y, zone.width, zone.height)
-        zoneGraphic.fill(zone.color)
-        zoneGraphic.zIndex = GameObjectsZIndex.zone
-        zoneGraphic.alpha = zone.opacity
-        zoneGraphic.eventMode = "static"
-        zoneGraphic.on("click", () => {
-            console.log("A zone was clicked!")
-            uiManager.selected = zone
-            uiManager.sideMenu.visibile = true
-            uiManager.sideMenu.selected = "zone"
-            uiManager.updateUi()
-        })
-        worldLayer.addChild(zoneGraphic)
-    }
-
-    updateZone(zoneId: Zone["id"], updatedZone: Zone): void {
-        const findZone = this.getZoneById(zoneId)
-        if (!findZone) {
-            console.log("failed to update zone due to not finding zone object")
-            return
-        }
-
-        this.zones = this.zones.map(zone => {
-            if (zone.id === zoneId) {
-                zone = updatedZone
-                return zone
-            } else return zone
-        })
-        this.reDrawZone(zoneId)
-        uiManager.updateUi()
-    }
-
-    reDrawZone(zoneId: Zone["id"]): void {
-        const zone = this.getZoneById(zoneId)
-        if (!zone) {
-            console.log("Failed to re draw zone due to not finding zone object")
-            return
-        }
-
-
-        worldLayer.children.filter(c => c instanceof ZoneGraphic).forEach(z => {
-            if (z.id === zoneId) {
-                z.clear()
-                z.rect(zone.startPoint.x, zone.startPoint.y, zone.width, zone.height)
-                z.fill(zone.color)
-                z.alpha = zone.opacity
-            }
-        })
-    }
-
-    getZoneById(zoneId: Zone["id"]): Zone | null {
-        return this.zones.find(zone => zone.id === zoneId) || null
-    }
-
-    deleteZone(zoneId: Zone["id"]): void {
-        const findZone = this.getZoneById(zoneId)
-        if (!findZone) {
-            console.log("failed to delete zone due to not finding zone object.")
-            return
-        }
-        const zoneGraphic = worldLayer.children.filter(c => c instanceof ZoneGraphic).find(z => z.id === zoneId)
-        if (!zoneGraphic) {
-            console.log("Failed to delete zone due to not finding zone graphic")
-            return
-        }
-
-        // Remove from the zoneManager zones array 
-        this.zones = this.zones.filter(z => z.id !== zoneId)
-
-        // Remove from the pixijs canvas
-        worldLayer.removeChild(zoneGraphic)
-
-        uiManager.updateUi()
-    }
 }
 
-export class ZoneGraphic extends Graphics {
-    id: string
+export class ZoneGraphic extends Graphics implements Zone {
+    id: string = uuidv4()
+    startPoint: Point
+    color: string = GAME_VALUES.DEFAULT_ZONE_COLOR
+    opacity: number = GAME_VALUES.DEFAULT_ZONE_OPACITY
+    type: Zone["type"] = "none"
+    editorType: Zone["editorType"] = "zone"
+    zoneWidth: number
+    zoneHeight: number
 
-    constructor(id: string) {
+    constructor(startPoint: Point, zoneWidth: Zone["zoneWidth"], zoneHeight: Zone["zoneHeight"]) {
         super()
-        this.id = id
+        this.startPoint = startPoint
+        this.zoneWidth = zoneWidth
+        this.zoneHeight = zoneHeight
+
+        this.rect(0, 0, zoneWidth, zoneHeight)
+        this.position.set(this.startPoint.x, this.startPoint.y)
+        this.fill(this.color)
+        this.alpha = this.opacity
+
+        this.eventMode = "static"
+        this.on("click", () => { 
+            uiManager.setSideMenu("zone", this.getZoneObject())
+        })
+
+        worldLayer.addChild(this)
+    }
+
+
+    updateZone(newZone: Zone): void {
+        // FIGURE OUT HOW THIS WORKS!
+        this.alpha = newZone.opacity
+        this.opacity = newZone.opacity
+
+        uiManager.updateUi()
+    }
+
+    getZoneObject(): Zone {
+        return { 
+            id: this.id,
+            startPoint: this.startPoint, 
+            zoneWidth: this.zoneWidth,
+            zoneHeight: this.zoneHeight,
+            type: this.type,
+            editorType: this.editorType,
+            color: this.color,
+            opacity: this.opacity
+        }
     }
 }

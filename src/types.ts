@@ -1,21 +1,18 @@
 import { Rectangle, type Point } from "pixi.js"
-import type { GraphManager } from "./graphManager"
-import type { ZoneManager } from "./zoneManager"
 import type { PropsManager } from "./propsManager"
 
-interface EditorDefaults<T extends string> {
+export interface EditorDefaults<T extends string> {
     editorType: T
     id: string
 }
 
 export interface Node extends EditorDefaults<"node"> {
     position: Point
-    connections: Edge[]
-
 }
 
 export interface Edge extends EditorDefaults<"edge"> {
-    connectionNodeId: Node["id"]
+    node1Id: Node["id"]
+    node2Id: Node["id"]
     edgeWidth: number
     type: "normal" | "highway"
 
@@ -23,8 +20,8 @@ export interface Edge extends EditorDefaults<"edge"> {
 
 export interface Zone extends EditorDefaults<"zone"> {
     startPoint: Point
-    width: number
-    height: number
+    zoneWidth: number
+    zoneHeight: number
     color: string
     opacity: number
     type: "countryside" | "downtown" | "school" | "none"
@@ -35,14 +32,15 @@ export interface Prop extends EditorDefaults<"prop"> {
     x: number
     y: number
     rotation: number
-    name: (typeof PROPS)[number]["name"]
+    propName: (typeof PROPS)[number]["propName"]
     parentPoint: { x: number, y: number }
 }
 
 export interface GameData {
-    mapGraph: GraphManager["nodes"]
-    zones: ZoneManager["zones"]
-    props: PropsManager["props"]
+    nodes: Node[]
+    edges: Edge[]
+    zones: Zone[]
+    props: Prop[]
 }
 
 export const EDGE_TYPES: Edge["type"][] = ["normal", "highway"]
@@ -56,19 +54,19 @@ export const GameMapOptions = {
 
 export const PROPS: {
     frame: Rectangle,
-    name: "basic house" | "skyscraper" | "police station"
+    propName: "basic house" | "skyscraper" | "police station"
 }[] = [
         {
             frame: new Rectangle(0, 0, 32, 32),
-            name: "basic house"
+            propName: "basic house"
         },
         {
             frame: new Rectangle(32, 0, 32, 32),
-            name: "skyscraper"
+            propName: "skyscraper"
         },
         {
             frame: new Rectangle(0, 32, 32, 32,),
-            name: "police station"
+            propName: "police station"
         }
     ]
 
@@ -76,6 +74,7 @@ export enum GameObjectsZIndex {
     background = 1,
     zone,
     edge,
+    edgeHitbox,
     point,
     prop
 }

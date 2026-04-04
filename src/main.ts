@@ -1,10 +1,13 @@
 import { Application, Container, Graphics } from 'pixi.js';
-import { loadMap } from './utils/loadMap';
 import { Viewport } from "pixi-viewport";
 import { GAME_VALUES } from './constants';
-import { EventsManager } from './eventsManager';
-import { UiManager } from './uiManager';
 import { initializeViewport } from './utils/initializeViewport';
+import { UIManager } from './uiManager';
+import { EventsManager } from './eventsManager';
+import { GraphManager } from './graphManager';
+import { ZoneManager } from './zoneManager';
+import { loadMap } from './utils/loadMap';
+import { PropsManager } from './propsManager';
 
 export const app = new Application()
 await app.init({ background: "gray", resizeTo: window })
@@ -36,5 +39,8 @@ viewportBorder.rect(0, 0, viewport.worldWidth, viewport.worldHeight)
 viewportBorder.stroke({ width: 25, color: "red" })
 viewport.addChild(viewportBorder)
 
-export const uiManager = new UiManager()
+export const uiManager = new UIManager()
 export const eventsManager = new EventsManager()
+export const graphManager = new GraphManager()
+export const zoneManager = new ZoneManager()
+export const propsManager = new PropsManager()
