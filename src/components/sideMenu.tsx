@@ -1,8 +1,9 @@
 import { uiManager } from "../main"
-import type { Node } from "../types"
+import type { Prop } from "../types"
 import SideMenuEdge from "./sidemenu/sideMenuEdge"
 import SideMenuNode from "./sidemenu/sideMenuNode"
-import SideMenuProp from "./sidemenu/sideMenuProps"
+import SideMenuPropsMenu from "./sidemenu/sideMenuPropsMenu"
+import SideMenuSelectedProp from "./sidemenu/sideMenuSelectedProp"
 import SideMenuZone from "./sidemenu/sideMenuZone"
 
 export default function SideMenu() {
@@ -22,7 +23,11 @@ export default function SideMenu() {
             sideMenu.activeMenu === "zone" && sideMenu.menuData?.editorType === "zone" && <SideMenuZone zone={sideMenu.menuData}/>
         }
         {
-            sideMenu.activeMenu === "prop" && <SideMenuProp/>
+            sideMenu.activeMenu === "prop" && (
+                sideMenu.menuData ? ( 
+                    <SideMenuSelectedProp prop={sideMenu.menuData as Prop}/>
+                ) : <SideMenuPropsMenu/>
+            )
         }
         <button
             className='bg-black/50 w-full h-10 cursor-pointer mt-auto'

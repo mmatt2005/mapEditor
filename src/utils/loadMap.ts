@@ -1,8 +1,9 @@
 import { Assets, Sprite } from "pixi.js"
 import cityMap from "../../public/map_city.json"
 import smallTownMap from "../../public/map_smallTown.json"
-import { EdgeGraphic, LoadEdgeGraphic, LoadNodeGraphic, NodeGraphic } from "../graphManager"
+import { LoadEdgeGraphic, LoadNodeGraphic } from "../graphManager"
 import { graphManager, uiManager, viewport, worldLayer } from "../main"
+import { LoadPropSprite } from "../propsManager"
 import type { GameData } from "../types"
 import { GameMapOptions, GameObjectsZIndex } from "../types"
 import { ZoneGraphic } from "../zoneManager"
@@ -64,10 +65,10 @@ export async function loadMap(selectedMap: keyof (typeof GameMapOptions) = uiMan
         const z = new ZoneGraphic(zone.startPoint, zone.zoneWidth, zone.zoneHeight)
     })
 
-    // // Draw the props
-    // data.props.forEach(prop => {
-    //     uiManager.propsManager.loadProp(prop.id)
-    // })
+    // Draw the props
+    data.props.forEach(async prop => {
+        const p = new LoadPropSprite(prop)
+    })
 
 
     uiManager.updateUi()

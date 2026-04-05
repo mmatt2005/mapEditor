@@ -1,5 +1,6 @@
 import { EdgeGraphic, NodeGraphic } from "../graphManager"
-import { uiManager, worldLayer } from "../main"
+import { worldLayer } from "../main"
+import { PropSprite } from "../propsManager"
 import type { GameData } from "../types"
 import { ZoneGraphic } from "../zoneManager"
 
@@ -19,6 +20,8 @@ export function exportMap(): GameData {
             exportObject.nodes.push(child.getNodeObject())
         }  else if (child instanceof EdgeGraphic) {
             exportObject.edges.push(child.getEdgeObject())
+        } else if (child instanceof PropSprite) {
+            exportObject.props.push(child.getPropObject())
         }
     }
 

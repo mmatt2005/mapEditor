@@ -1,4 +1,4 @@
-import { Application, Container, Graphics } from 'pixi.js';
+import { Application, Assets, Container, Graphics, Texture } from 'pixi.js';
 import { Viewport } from "pixi-viewport";
 import { GAME_VALUES } from './constants';
 import { initializeViewport } from './utils/initializeViewport';
@@ -11,6 +11,8 @@ import { PropsManager } from './propsManager';
 
 export const app = new Application()
 await app.init({ background: "gray", resizeTo: window })
+export const spritesheet: Texture = await Assets.load("/assets/places.png")
+
 
 const pixiContainer = document.createElement("div")
 pixiContainer.id = "pixi-container"

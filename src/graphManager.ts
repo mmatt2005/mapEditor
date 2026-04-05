@@ -56,6 +56,7 @@ export class EdgeGraphic extends Graphics implements Edge {
         }
 
         this.edgeWidth = newEdge.edgeWidth
+        this.type = newEdge.type
 
         this.clear()
         this.draw(node1, node2)
@@ -79,20 +80,14 @@ export class EdgeGraphic extends Graphics implements Edge {
     }
 
     public createEdgeGraphic(node1: Node, node2: Node): void {
-        const edgeHitbox = new Graphics()
-        edgeHitbox.moveTo(node1.position.x, node1.position.y)
-        edgeHitbox.lineTo(node2.position.x, node2.position.y)
-        edgeHitbox.stroke({ width: GAME_VALUES.EDGE_WIDTH + 10, alpha: 0.0 })
-        edgeHitbox.eventMode = "static"
-        edgeHitbox.zIndex = GameObjectsZIndex.edgeHitbox
-        edgeHitbox.on("click", () => this.handleClick())
-
         this.node1Id = node1.id
         this.node2Id = node2.id
         this.draw(node1, node2)
 
+        this.eventMode = "static"
+        this.on("click", this.handleClick)
+
         worldLayer.addChild(this)
-        worldLayer.addChild(edgeHitbox)
     }
 
     private draw(node1: Node, node2: Node): void {
@@ -160,6 +155,8 @@ export class LoadEdgeGraphic extends EdgeGraphic {
     constructor(node1: Node, node2: Node, edge: Edge) {
         super()
         this.id = edge.id
+        this.type = edge.type
+        this.edgeWidth = edge.edgeWidth
         this.createEdgeGraphic(node1, node2)
     }
 }

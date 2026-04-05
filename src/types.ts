@@ -31,9 +31,10 @@ export interface Zone extends EditorDefaults<"zone"> {
 export interface Prop extends EditorDefaults<"prop"> {
     x: number
     y: number
-    rotation: number
+    angle: number
     propName: (typeof PROPS)[number]["propName"]
-    parentPoint: { x: number, y: number }
+    parentPoint: { x: number, y: number } | null
+    parentEdgeId: Edge["id"] | null
 }
 
 export interface GameData {
