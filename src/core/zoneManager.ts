@@ -1,7 +1,7 @@
 import { Graphics, Point } from "pixi.js"
-import { GAME_VALUES } from "./constants"
-import { app, eventsManager, uiManager, viewport, worldLayer } from "./main"
-import type { Zone } from "./types"
+import { GAME_VALUES } from "../constants"
+import { app, eventsManager, uiManager, viewport, worldLayer } from "../core/main"
+import type { Zone } from "../types"
 import { v4 as uuidv4 } from "uuid"
 
 export class ZoneManager {
@@ -46,7 +46,7 @@ export class ZoneManager {
                 const startX = Math.min(this.mouseDownPosition.x, eventsManager.mousePosition.x)
                 const startY = Math.min(this.mouseDownPosition.y, eventsManager.mousePosition.y)
 
-                const zone = new ZoneGraphic(new Point(startX, startY), zoneWidth, zoneHeight)
+                new ZoneGraphic(new Point(startX, startY), zoneWidth, zoneHeight)
 
                 squareArea.clear()
             }
@@ -97,7 +97,7 @@ export class ZoneGraphic extends Graphics implements Zone {
         this.alpha = this.opacity
 
         this.eventMode = "static"
-        this.on("click", () => { 
+        this.on("click", () => {
             uiManager.setSideMenu("zone", this.getZoneObject())
         })
 
@@ -114,9 +114,9 @@ export class ZoneGraphic extends Graphics implements Zone {
     }
 
     getZoneObject(): Zone {
-        return { 
+        return {
             id: this.id,
-            startPoint: this.startPoint, 
+            startPoint: this.startPoint,
             zoneWidth: this.zoneWidth,
             zoneHeight: this.zoneHeight,
             type: this.type,

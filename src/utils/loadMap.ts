@@ -1,12 +1,13 @@
 import { Assets, Sprite } from "pixi.js"
-import cityMap from "../../public/map_city.json"
-import smallTownMap from "../../public/map_smallTown.json"
-import { LoadEdgeGraphic, LoadNodeGraphic } from "../graphManager"
-import { graphManager, uiManager, viewport, worldLayer } from "../main"
-import { LoadPropSprite } from "../propsManager"
+import cityMap from "../../public/assets/map_city.json"
+import smallTownMap from "../../public/assets/map_smallTown.json"
+import { graphManager, uiManager, viewport, worldLayer } from "../core/main"
+import { LoadNodeGraphic } from "../core/node"
+import { LoadPropSprite } from "../core/propsManager"
 import type { GameData } from "../types"
 import { GameMapOptions, GameObjectsZIndex } from "../types"
-import { ZoneGraphic } from "../zoneManager"
+import { ZoneGraphic } from "../core/zoneManager"
+import { LoadEdgeGraphic } from "../core/edge"
 
 /**
  * @author mattmichalowski
@@ -41,12 +42,12 @@ export async function loadMap(selectedMap: keyof (typeof GameMapOptions) = uiMan
 
     // Draw all the nodes (points)
     data.nodes.forEach(node => {
-        const n = new LoadNodeGraphic(node)
+        new LoadNodeGraphic(node)
     })
 
     // Draw all the edges (lines)
     data.edges.forEach(edge => {
-        
+
         const node1 = graphManager.getNodeGraphic(edge.node1Id)
         const node2 = graphManager.getNodeGraphic(edge.node2Id)
 
@@ -59,16 +60,17 @@ export async function loadMap(selectedMap: keyof (typeof GameMapOptions) = uiMan
     })
 
 
-
     // Draw the Zones
     data.zones.forEach(zone => {
-        const z = new ZoneGraphic(zone.startPoint, zone.zoneWidth, zone.zoneHeight)
+        new ZoneGraphic(zone.startPoint, zone.zoneWidth, zone.zoneHeight)
     })
 
     // Draw the props
     data.props.forEach(async prop => {
-        const p = new LoadPropSprite(prop)
+        new LoadPropSprite(prop)
     })
+
+
 
 
     uiManager.updateUi()

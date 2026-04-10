@@ -1,7 +1,7 @@
 import { Rectangle, Sprite, Texture } from "pixi.js";
 import { v4 as uuidv4 } from "uuid";
-import { spritesheet, uiManager, viewport, worldLayer } from "./main";
-import { GameObjectsZIndex, PROPS, type Prop } from "./types";
+import { highlightManager, spritesheet, uiManager, viewport, worldLayer } from "../core/main";
+import { GameObjectsZIndex, PROPS, type Prop } from "../types";
 
 export class PropsManager {
     selectedProp: PropSprite | null = null
@@ -29,6 +29,8 @@ export class PropsManager {
         this.selectedProp.texture = propTexture
         this.selectedProp.zIndex = GameObjectsZIndex.prop
         this.selectedProp.propName = selectedPropName
+        this.selectedProp.eventMode = "static"
+        this.selectedProp.on("click", this.selectedProp.handleClick)
 
         worldLayer.addChild(this.selectedProp)
     }
@@ -54,6 +56,7 @@ export class PropSprite extends Sprite implements Prop {
     propName: Prop["propName"] = "basic house"
 
     public handleClick(): void { 
+        highlightManager.highlight(this)
         uiManager.setSideMenu("prop", this.getPropObject())
     }
 

@@ -20,5 +20,5 @@ export const GAME_VALUES = {
     // The height of the world (canvas)
     WORLD_HEIGHT: 5000,
     // The width of a edge (line) when first created
-    EDGE_WIDTH: 50
+    MIN_EDGE_WIDTH: 75
 } as const

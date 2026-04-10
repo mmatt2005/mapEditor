@@ -1,5 +1,5 @@
 import type { Point } from "pixi.js";
-import { viewport } from "./main";
+import { highlightManager, viewport } from "../core/main";
 
 export class EventsManager {
     mousePosition: Point | null = null
@@ -27,6 +27,8 @@ export class EventsManager {
                 this.isShiftKeyDown = true
             } else if (event.key === "`") {
                 this.isBackTickKeyDown = true
+            } else if (event.key === "*" && this.isShiftKeyDown) {
+                highlightManager.unHighlight()
             }
         })
 

@@ -1,4 +1,4 @@
-import { propsManager } from "../../main";
+import { propsManager } from "../../core/main";
 import type { Prop } from "../../types";
 
 export default function SideMenuSelectedProp({ prop }: { prop: Prop }) {

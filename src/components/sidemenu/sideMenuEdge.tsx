@@ -1,4 +1,4 @@
-import { graphManager, uiManager } from "../../main";
+import { graphManager, pathFindingDebug, uiManager } from "../../core/main";
 import { EDGE_TYPES, type Edge } from "../../types";
 
 export default function SideMenuEdge({ edge }: { edge: Edge }) {
@@ -50,6 +50,23 @@ export default function SideMenuEdge({ edge }: { edge: Edge }) {
                     ))
                 }
             </select>
+        </div>
+        <div className="mt-4 space-y-2">
+            <button
+                className="bg-green-500 p-1 w-full cursor-pointer"
+                onClick={() => {
+                    pathFindingDebug.setStartEdge(edgeGraphic)
+                    // edgeGraphic.setHighlightColor("green")
+                }}
+            >Set as start edge (pathfinding)</button>
+            <button
+                className="bg-red-500 p-1 w-full cursor-pointer"
+                onClick={() => {
+                    pathFindingDebug.setEndEdge(edgeGraphic)
+                    // edgeGraphic.setHighlightColor("red")
+
+                }}
+            >Set as end edge (pathfinding)</button>
         </div>
     </>
 }

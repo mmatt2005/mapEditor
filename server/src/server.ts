@@ -12,7 +12,7 @@ interface UpdateRequestBody {
 }
 
 app.post("/update", async (req: Request<{}, {}, UpdateRequestBody>, res) => {
-    const jsonPath = path.join(process.cwd(), `/public/${req.body.mapJsonFile}`)
+    const jsonPath = path.join(process.cwd(), `/public/assets/${req.body.mapJsonFile}`)
 
 
     try {

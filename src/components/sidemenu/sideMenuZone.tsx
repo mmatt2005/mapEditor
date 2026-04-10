@@ -1,4 +1,4 @@
-import { graphManager } from "../../main";
+import { graphManager } from "../../core/main";
 import type { Zone } from "../../types";
 
 export default function SideMenuZone({ zone }: { zone: Zone }) {

@@ -1,4 +1,4 @@
-import { uiManager } from "../main"
+import { uiManager } from "../core/main"
 import { clearCanvas } from "../utils/clearCanvas"
 import { saveMap } from "../utils/saveMap"
 

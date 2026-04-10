@@ -1,4 +1,4 @@
-import { propsManager } from "../../main";
+import { propsManager } from "../../core/main";
 import { PROPS } from "../../types";
 
 export default function SideMenuPropsMenu() {

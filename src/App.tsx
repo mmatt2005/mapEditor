@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import { create } from 'zustand'
 import './App.css'
-import { uiManager } from './main.ts'
-import type { UIManager } from './uiManager.ts'
+import { uiManager } from './core/main.ts'
+import type { UIManager } from './core/uiManager.ts'
 import { RightMenuButtons } from './components/rightMenuButtons.tsx'
 import SideMenu from './components/sideMenu.tsx'
 

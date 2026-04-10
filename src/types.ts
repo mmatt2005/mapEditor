@@ -1,5 +1,5 @@
-import { Rectangle, type Point } from "pixi.js"
-import type { PropsManager } from "./propsManager"
+import { Graphics, Rectangle, type Point } from "pixi.js"
+
 
 export interface EditorDefaults<T extends string> {
     editorType: T
@@ -17,6 +17,10 @@ export interface Edge extends EditorDefaults<"edge"> {
     type: "normal" | "highway"
 
 }
+
+export interface Vehicle extends EditorDefaults<"vehicle"> {
+}
+
 
 export interface Zone extends EditorDefaults<"zone"> {
     startPoint: Point
@@ -55,7 +59,7 @@ export const GameMapOptions = {
 
 export const PROPS: {
     frame: Rectangle,
-    propName: "basic house" | "skyscraper" | "police station"
+    propName: "basic house" | "skyscraper" | "police station" | "test house" | "car"
 }[] = [
         {
             frame: new Rectangle(0, 0, 32, 32),
@@ -68,6 +72,14 @@ export const PROPS: {
         {
             frame: new Rectangle(0, 32, 32, 32,),
             propName: "police station"
+        },
+        {
+            frame: new Rectangle(32, 32, 32, 32),
+            propName: "test house"
+        },
+        {
+            frame: new Rectangle(32 * 2, 32, 32, 32),
+            propName: "car"
         }
     ]
 
@@ -77,7 +89,8 @@ export enum GameObjectsZIndex {
     edge,
     edgeHitbox,
     point,
-    prop
+    prop,
+    vehicle
 }
 
 export const ZONE_TYPES: Zone["type"][] = ["countryside", "downtown", "school", "none"]

@@ -1,9 +1,11 @@
-import { uiManager } from "../main"
+import { uiManager } from "../core/main"
 import type { Prop } from "../types"
+import SideMenuDebug from "./sidemenu/sideMenuDebug"
 import SideMenuEdge from "./sidemenu/sideMenuEdge"
 import SideMenuNode from "./sidemenu/sideMenuNode"
 import SideMenuPropsMenu from "./sidemenu/sideMenuPropsMenu"
 import SideMenuSelectedProp from "./sidemenu/sideMenuSelectedProp"
+import SideMenuVehicle from "./sidemenu/sideMenuVehicle"
 import SideMenuZone from "./sidemenu/sideMenuZone"
 
 export default function SideMenu() {
@@ -28,6 +30,12 @@ export default function SideMenu() {
                     <SideMenuSelectedProp prop={sideMenu.menuData as Prop}/>
                 ) : <SideMenuPropsMenu/>
             )
+        }
+        {
+            sideMenu.activeMenu === "debug" && <SideMenuDebug/>
+        }
+        {
+            sideMenu.activeMenu === "vehicle" && sideMenu.menuData?.editorType === "vehicle" && <SideMenuVehicle vehicle={sideMenu.menuData}/>
         }
         <button
             className='bg-black/50 w-full h-10 cursor-pointer mt-auto'

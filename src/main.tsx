@@ -9,5 +9,5 @@ createRoot(document.getElementById('root')!).render(
 )
 
 setTimeout(() => { 
-  import("./main.ts")
+  import("./core/main.ts")
 }, 1000)

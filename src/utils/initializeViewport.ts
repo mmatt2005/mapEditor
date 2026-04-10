@@ -1,4 +1,4 @@
-import { viewport } from "../main";
+import { viewport } from "../core/main";
 
 
 /**

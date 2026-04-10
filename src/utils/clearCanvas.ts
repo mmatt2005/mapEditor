@@ -1,4 +1,4 @@
-import { worldLayer } from "../main";
+import { worldLayer } from "../core/main";
 
 export function clearCanvas(): void { 
     worldLayer.removeChildren()

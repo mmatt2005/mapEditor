@@ -1,8 +1,9 @@
-import { EdgeGraphic, NodeGraphic } from "../graphManager"
-import { worldLayer } from "../main"
-import { PropSprite } from "../propsManager"
+import { EdgeGraphic } from "../core/edge"
+import { worldLayer } from "../core/main"
+import { NodeGraphic } from "../core/node"
+import { PropSprite } from "../core/propsManager"
 import type { GameData } from "../types"
-import { ZoneGraphic } from "../zoneManager"
+import { ZoneGraphic } from "../core/zoneManager"
 
 
 /**
